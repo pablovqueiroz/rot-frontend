@@ -1,0 +1,21 @@
+:root {
+  --color-primary: #2563eb;
+  --color-success: #22c55e;
+
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  --calendar-available: #22c55e;
+  --calendar-booked: #2563eb;
+  --calendar-blocked: #e5e7eb;
+  --calendar-hover: #dbeafe;
+}
+
+/*  ex. how to use: var(--color-primary) */

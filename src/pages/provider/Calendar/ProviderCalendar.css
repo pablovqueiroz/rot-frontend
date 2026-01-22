@@ -1,0 +1,49 @@
+/* Container */
+.provider-calendar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  height: 80vh;
+}
+
+/* days header */
+.rbc-header {
+  padding: 8px 0;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* timetable column */
+.rbc-time-gutter {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+/* principal grid */
+.rbc-time-view {
+  border: none;
+}
+
+/* events */
+.rbc-event {
+  font-size: 12px;
+  padding: 4px 6px;
+}
+
+/* hover */
+.rbc-event:hover {
+  background-color: var(--calendar-hover) !important;
+}
+
+/* slected event */
+.rbc-selected {
+  outline: 2px solid var(--color-primary);
+}
+
+/* now */
+.rbc-current-time-indicator {
+  background-color: var(--color-error);
+  height: 2px;
+}
