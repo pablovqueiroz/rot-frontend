@@ -6,10 +6,20 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  min-height: 100vh;
+}
+
 body {
   line-height: 1.5;
-  /* Improve text rendering */
   -webkit-font-smoothing: antialiased;
+  font-family: "Montserrat", sans-serif;
+}
+
+main {
+  background-color: var(--color-background);
+  min-height: 80vh;
 }
 
 ul,
@@ -38,3 +48,6 @@ select {
   font: inherit;
 }
 
+button {
+  cursor: pointer;
+}

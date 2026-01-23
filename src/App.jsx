@@ -8,23 +8,28 @@ import NotFound from "./pages/NotFound/NotFound";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import ProviderCalendar from "./pages/provider/Calendar/ProviderCalendar";
+import UserProfilePage from "./pages/Profile/UserProfilePage";
+import ProviderProfilePage from "./pages/Profile/ProviderProfilePage";
 
 function App() {
   return (
     <>
-    <Navbar/>
-    <Routes>
-      <Route path="/" element={<ProvidersList />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/providers/:id" element={<ProviderDetails />} />
-      <Route path="/my-appointments" element={<MyAppointments />} />
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<ProvidersList />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/providers/:id" element={<ProviderDetails />} />
+          <Route path="/my-appointments" element={<MyAppointments />} />
+          <Route path="/user/profile" element={<UserProfilePage/>}/>
+          <Route path="/provider/profile" element={<ProviderProfilePage/>}/>
+          <Route path="/provider/calendar" element={<ProviderCalendar />} />
 
-      <Route path="/provider/calendar" element={<ProviderCalendar/>} />
-
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-    <Footer/>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
     </>
   );
 }

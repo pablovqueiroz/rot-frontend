@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5005/api";
+import { API_URL } from "../../../config/config";
+
 
 export async function getAppointments() {
   const token = localStorage.getItem("authToken");

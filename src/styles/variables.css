@@ -18,4 +18,27 @@
   --calendar-hover: #dbeafe;
 }
 
-/*  ex. how to use: var(--color-primary) */
+
+/*Dark Mode */
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #3b82f6;
+    --color-success: #4ade80;
+    
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-border: #334155;
+    
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #cbd5e1;
+    
+    --color-warning: #fbbf24;
+    --color-error: #f87171;
+    
+    --calendar-available: #4ade80;
+    --calendar-booked: #3b82f6;
+    --calendar-blocked: #334155;
+    --calendar-hover: #1e40af;
+  }
+} */

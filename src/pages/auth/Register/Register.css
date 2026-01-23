@@ -1,0 +1,140 @@
+.register-wrapper {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+  padding: 24px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.register-title {
+  font-size: 1.5em;
+  color: var(--color-text-primary);
+  text-align: center;
+  text-decoration: underline;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.role-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.role-selector button {
+  flex: 1;
+  padding: 10px 12px;
+
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.role-selector button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+.role-selector button.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+  font-weight: 600;
+}
+
+.role-selector button:active {
+  background-color: #1e40af;
+  border-color: #1e40af;
+}
+
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.register-field label {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.register-field input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  font-size: 14px;
+}
+
+.register-field input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.register-error {
+  font-size: 13px;
+  color: var(--color-error);
+}
+
+.register-button {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.register-button:hover {
+  background-color: #1d4ed8;
+}
+
+.register-button:active {
+  background-color: #1e40af;
+}
+
+.register-footer {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.register-footer a {
+  color: var(--color-primary);
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
