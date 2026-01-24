@@ -51,7 +51,7 @@ function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
       await authenticateUser();
       setSelectedFile(null);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to upload image");
     } finally {
       setIsUploading(false);

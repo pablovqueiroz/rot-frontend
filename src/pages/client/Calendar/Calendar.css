@@ -1,0 +1,50 @@
+.calendar-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.calendar-title {
+    display: flex;
+    justify-content: center;
+}
+.calendar-page p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.slots-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.slots-list button {
+  width: 100%;
+  background: var(--calendar-available);
+  color: var(--color-surface);
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 12px 8px;
+}
+
+
+.slots-list button:hover {
+  background: var(--calendar-hover);
+  color: var(--color-text-primary);
+}
+
+
+
+.calendar-page .empty {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}

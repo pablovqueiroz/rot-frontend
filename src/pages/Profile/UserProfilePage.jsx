@@ -40,7 +40,7 @@ function UserProfilePage() {
           image: data.image || null,
         });
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
 
@@ -64,7 +64,7 @@ function UserProfilePage() {
       await authenticateUser();
       alert("Profile updated successfully");
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to delete account.");
     }
   };
@@ -86,7 +86,7 @@ function UserProfilePage() {
       });
       handleLogout();
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to delete account.");
     }
   };

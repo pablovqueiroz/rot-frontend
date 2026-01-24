@@ -8,6 +8,7 @@ import DangerZone from "../../components/Profile/DangerZone";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import ServicesManager from "../../components/Profile/ServicesManager";
+import AvailabilitySection from "../../components/Profile/AvailabilitySection";
 
 const defaultImg =
   "https://res.cloudinary.com/dacvtyyst/image/upload/v1769168326/bwcwiefeph34flwiwohy.jpg";
@@ -45,7 +46,7 @@ function ProviderProfilePage() {
           services: data.services || [],
         });
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
 
@@ -69,8 +70,8 @@ function ProviderProfilePage() {
       await authenticateUser();
       alert("Profile updated successfully");
     } catch (error) {
-      console.error(error);
-      alert("Failed to delete account.");
+      console.log(error);
+      alert("Failed to update profile.");
     }
   };
 
@@ -101,7 +102,7 @@ function ProviderProfilePage() {
 
       handleLogout();
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to delete account.");
     }
   };
@@ -194,6 +195,7 @@ function ProviderProfilePage() {
               }
             />
           </section>
+          <AvailabilitySection />
           <DangerZone
             label="Delete my account"
             onDelete={handleDeleteAccount}

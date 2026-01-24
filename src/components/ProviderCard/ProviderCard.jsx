@@ -11,20 +11,20 @@ function ProviderCard({ provider, onSelect }) {
   const serviceNames = services
     .slice(0, 3)
     .map((service) => service.name)
-    .join(", ");
+    .join(" | ");
 
   const hasMoreServices = services.length > 3;
 
   return (
     <div className={`provider-card ${!isActive ? "inactive" : ""}`}>
-      <div className="provider-avatar-wrapper">
-  <img
-    src={image?.url}
-    alt={name}
-    className="provider-avatar"
-    loading="lazy"
-  />
-</div>
+      <div>
+        <img
+          src={image?.url}
+          alt={name}
+          className="provider-avatar"
+          loading="lazy"
+        />
+      </div>
 
       <section className="provider-content">
         <h3 className="provider-name">{name}</h3>
@@ -37,20 +37,28 @@ function ProviderCard({ provider, onSelect }) {
 
         <article className="provider-info">
           <span className="provider-services">
+            <strong>Services:</strong>
+            <br />
             {serviceNames}
             {hasMoreServices && "..."}
           </span>
-
-          {startingPrice !== null && <span>From €{startingPrice}</span>}
         </article>
 
-        <button
-          className="provider-button"
-          disabled={!isActive}
-          onClick={() => onSelect(provider)}
-        >
-          {isActive ? "Book appointment" : "Unavailable"}
-        </button>
+        <section className="provider-footer">
+          {startingPrice !== null && (
+            <span>
+              <strong>From:</strong> €{startingPrice}
+            </span>
+          )}
+
+          <button
+            className="provider-button"
+            disabled={!isActive}
+            onClick={() => onSelect(provider)}
+          >
+            {isActive ? "Book appointment" : "Unavailable"}
+          </button>
+        </section>
       </section>
     </div>
   );

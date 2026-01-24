@@ -16,6 +16,12 @@
   --calendar-booked: #2563eb;
   --calendar-blocked: #e5e7eb;
   --calendar-hover: #dbeafe;
+
+    --gradient-brand: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-success)
+  );
 }
 
 

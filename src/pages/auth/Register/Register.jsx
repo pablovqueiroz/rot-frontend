@@ -55,7 +55,7 @@ function Register() {
           <section className="role-selector">
             <button
               type="button"
-              className={role === "user" ? "active" : ""}
+              className={role === "user" ? "active" : ""} 
               onClick={() => setRole("user")}
             >
               Client

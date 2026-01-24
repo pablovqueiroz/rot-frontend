@@ -20,7 +20,7 @@ function Login() {
         password,
         email,
       });
-      // console.log(data);
+
       //store the authToken in local storage
       localStorage.setItem("authToken", data.authToken);
       const userData = await authenticateUser();

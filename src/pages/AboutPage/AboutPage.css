@@ -1,0 +1,73 @@
+.about-page {
+  background-color: var(--color-background);
+  padding: 64px 24px;
+}
+
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-container h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 24px;
+
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-intro {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+.about-section {
+  margin-bottom: 48px;
+}
+
+.about-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: px;
+}
+
+.about-section p {
+  font-size: 16px;
+  line-height: ;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+}
+
+.about-services {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.about-services li {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.about-cta {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+}
+
+.about-cta p{
+  line-height: 3;
+}

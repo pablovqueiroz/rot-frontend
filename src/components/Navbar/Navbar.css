@@ -57,22 +57,10 @@ nav {
   text-shadow: 2px 2px 4px var(--color-success);
 }
 
-button {
-  padding: 5px;
-  margin: 5px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  background-color: var(--color-warning);
-  color: #fff;
-}
 
 button:hover {
   opacity: 0.9;
 }
-
-
 
 /* From Uiverse.io by nihad-abbasov */
 /* switch settings 👇 */

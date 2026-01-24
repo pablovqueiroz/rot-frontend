@@ -246,3 +246,33 @@
 .service-actions .delete {
   background-color: var(--color-error);
 }
+
+/* availability manager */
+.availability-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.availability-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.availability-day {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 110px;
+}
+
+.availability-hours {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.availability-hours input:disabled {
+  opacity: 0.5;
+}

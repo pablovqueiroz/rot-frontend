@@ -3,7 +3,7 @@ import "./ProvidersList.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProviderCard from "../../../components/ProviderCard/ProviderCard";
-import { API_URL } from "../../../../../../../module-2/week 2/MD2 - PROJECT/harry-potter-react-app/src/config/config";
+import { API_URL } from "../../../config/config";
 
 function ProvidersList() {
   const [providers, setProviders] = useState([]);
@@ -11,21 +11,19 @@ function ProvidersList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${API_URL}/providers`)
-      .then(({ data }) => {
-        console.log("providers dadta: ", data);
-        setProviders(data || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log("Error fetching providers data", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  async function fetchProviders() {
+    try {
+      const { data } = await axios.get(`${API_URL}/providers`);
+      setProviders(data || []);
+    } catch (err) {
+      console.log("Error fetching providers data", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchProviders();
+}, []);
 
   const handleSelectProvider = (providerId) => {
     const token = localStorage.getItem("authToken");

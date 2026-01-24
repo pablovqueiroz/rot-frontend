@@ -1,0 +1,30 @@
+/* hero*/
+
+.hero {
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  max-width: 600px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.hero-about-link {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.hero-about-link button {
+  padding: 10px;
+}

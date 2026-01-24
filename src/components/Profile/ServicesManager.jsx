@@ -37,7 +37,7 @@ function ServicesManager({ services, onServicesChange }) {
         durationMinutes: "",
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to add service");
     }
   };
@@ -61,7 +61,7 @@ function ServicesManager({ services, onServicesChange }) {
 
       onServicesChange(services.filter((service) => service.id !== serviceId));
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to delete service");
     }
   };

@@ -39,16 +39,11 @@
 .role-selector button {
   flex: 1;
   padding: 10px 12px;
-
   border-radius: 8px;
   border: 1px solid var(--color-border);
-
-  background-color: var(--color-surface);
   color: var(--color-text-secondary);
-
   font-size: 14px;
-  font-weight: 500;
-
+  font-weight: 600;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -62,15 +57,10 @@
 }
 
 .role-selector button.active {
-  background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: var(--color-surface);
   font-weight: 600;
-}
-
-.role-selector button:active {
-  background-color: #1e40af;
-  border-color: #1e40af;
+  scale: 1.1;
 }
 
 .register-field {
@@ -107,20 +97,11 @@
   padding: 12px;
   border-radius: 8px;
   border: none;
-  background-color: var(--color-primary);
   color: var(--color-surface);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
-
-.register-button:hover {
-  background-color: #1d4ed8;
-}
-
-.register-button:active {
-  background-color: #1e40af;
 }
 
 .register-footer {
