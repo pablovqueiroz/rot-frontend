@@ -29,7 +29,6 @@ const AuthWrapper = ({ children }) => {
       setCurrentUser(data.decodedToken);
       setIsLoggedIn(true);
       return data.decodedToken;
-      
     } catch (error) {
       console.log(error);
       setCurrentUser(null);

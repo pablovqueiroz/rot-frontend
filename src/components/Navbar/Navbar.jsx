@@ -1,9 +1,11 @@
-import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
+import { Link, NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { ThemeContext } from "../../context/ThemeContext";
 
 function Navbar() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const { isLoggedIn, currentUser, handleLogout, isLoading } =
     useContext(AuthContext);
 
@@ -30,9 +32,10 @@ function Navbar() {
         </Link>
       </section>
       <section className="nav-center">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/appointments">Appointments</NavLink>
+        {currentUser?.role !== "provider" && (<NavLink to="/">Home</NavLink>)}
         <NavLink to="/about">About</NavLink>
+        {isLoggedIn && <NavLink to="/my-appointments">My Appointments</NavLink>}
+        {currentUser?.role === "provider" && (<NavLink to="/provider/services">My services</NavLink>)}
       </section>
 
       <section className="nav-right">
@@ -49,7 +52,11 @@ function Navbar() {
         )}
 
         <label className="ui-switch">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
           <div className="slider">
             <div className="circle"></div>
           </div>

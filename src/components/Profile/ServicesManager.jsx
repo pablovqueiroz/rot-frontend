@@ -1,18 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../config/config";
 
-function ServicesManager({ services, onServicesChange }) {
+function ServicesManager({ services = [], onServicesChange }) {
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
+
   const [newService, setNewService] = useState({
     name: "",
     price: "",
     durationMinutes: "",
   });
 
+  const [editingServiceId, setEditingServiceId] = useState(null);
+
+  const [editedService, setEditedService] = useState({
+    name: "",
+    price: "",
+    durationMinutes: "",
+  });
+
+  if (!onServicesChange) {
+    throw new Error("ServicesManager requires onServicesChange prop");
+  }
+
   // ADD service
   const handleAddService = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
+
+    setMessage(null);
 
     try {
       const { data } = await axios.post(
@@ -36,9 +53,13 @@ function ServicesManager({ services, onServicesChange }) {
         price: "",
         durationMinutes: "",
       });
+
+      setMessage("Service added successfully");
+      setMessageType("success");
     } catch (error) {
       console.log(error);
-      alert("Failed to add service");
+      setMessage("Failed to add service");
+      setMessageType("error");
     }
   };
 
@@ -51,6 +72,7 @@ function ServicesManager({ services, onServicesChange }) {
     if (!confirmed) return;
 
     const token = localStorage.getItem("authToken");
+    setMessage(null);
 
     try {
       await axios.delete(`${API_URL}/providers/services/${serviceId}`, {
@@ -60,71 +82,191 @@ function ServicesManager({ services, onServicesChange }) {
       });
 
       onServicesChange(services.filter((service) => service.id !== serviceId));
+
+      setMessage("Service deleted successfully");
+      setMessageType("success");
     } catch (error) {
       console.log(error);
-      alert("Failed to delete service");
+      setMessage("Failed to delete service");
+      setMessageType("error");
     }
   };
 
+  //update service
+  const handleUpdateService = async (serviceId) => {
+    const token = localStorage.getItem("authToken");
+    setMessage(null);
+
+    try {
+      const { data } = await axios.put(
+        `${API_URL}/providers/services/${serviceId}`,
+        {
+          name: editedService.name,
+          price: Number(editedService.price),
+          durationMinutes: Number(editedService.durationMinutes),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const updatedServices = services.map((service) =>
+        service.id === serviceId ? data : service,
+      );
+
+      onServicesChange(updatedServices);
+      setEditingServiceId(null);
+      setMessage("Service updated successfully");
+      setMessageType("success");
+    } catch (error) {
+      console.log(error);
+      setMessage("Failed to update service");
+      setMessageType("error");
+    }
+  };
+
+  useEffect(() => {
+    if (!message) return;
+
+    const timer = setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [message]);
   return (
     <section className="services-manager">
-      <h2>My Services</h2>
-
       <ul className="services-list">
-        {services.length === 0 && <p>No services added yet.</p>}
+        {services.length === 0 && !editingServiceId && (
+          <p>No services added yet.</p>
+        )}
 
         {services.map((service) => (
           <li key={service.id} className="service-item">
-            <strong>{service.name}</strong>
-            <span>{service.durationMinutes} min</span>
-            <span>€ {service.price}</span>
+            {editingServiceId === service.id ? (
+              <>
+                <div className="service-col name">
+                  <input
+                    type="text"
+                    value={editedService.name}
+                    onChange={(e) =>
+                      setEditedService({
+                        ...editedService,
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-            <button
-              type="button"
-              onClick={() => handleDeleteService(service.id)}
-            >
-              Delete
-            </button>
+                <div className="service-col duration">
+                  <input
+                    type="number"
+                    value={editedService.durationMinutes}
+                    onChange={(e) =>
+                      setEditedService({
+                        ...editedService,
+                        durationMinutes: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="service-col price">
+                  <input
+                    type="number"
+                    value={editedService.price}
+                    onChange={(e) =>
+                      setEditedService({
+                        ...editedService,
+                        price: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="service-col actions">
+                  <button onClick={() => handleUpdateService(service.id)}>
+                    Save
+                  </button>
+                  <button onClick={() => setEditingServiceId(null)}>
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="service-col name">{service.name}</div>
+                <div className="service-col duration">
+                  {service.durationMinutes} min
+                </div>
+                <div className="service-col price">€{service.price}</div>
+
+                <div className="service-col actions">
+                  <button
+                    onClick={() => {
+                      setEditingServiceId(service.id);
+                      setEditedService({
+                        name: service.name,
+                        price: service.price,
+                        durationMinutes: service.durationMinutes,
+                      });
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={() => handleDeleteService(service.id)}>
+                    Delete
+                  </button>
+                </div>
+              </>
+            )}
           </li>
         ))}
       </ul>
 
-      <form onSubmit={handleAddService} className="service-form">
-        <input
-          type="text"
-          placeholder="Service name"
-          value={newService.name}
-          onChange={(e) =>
-            setNewService({ ...newService, name: e.target.value })
-          }
-          required
-        />
+      <section className="form-container">
+        <form onSubmit={handleAddService} className="service-form">
+          <input
+            type="text"
+            placeholder="Service name"
+            value={newService.name}
+            onChange={(e) =>
+              setNewService({ ...newService, name: e.target.value })
+            }
+            required
+          />
 
-        <input
-          type="number"
-          placeholder="Price"
-          value={newService.price}
-          onChange={(e) =>
-            setNewService({ ...newService, price: e.target.value })
-          }
-          required
-        />
+          <input
+            type="number"
+            placeholder="Price"
+            value={newService.price}
+            onChange={(e) =>
+              setNewService({ ...newService, price: e.target.value })
+            }
+            required
+          />
 
-        <input
-          type="number"
-          placeholder="Duration (minutes)"
-          value={newService.durationMinutes}
-          onChange={(e) =>
-            setNewService({
-              ...newService,
-              durationMinutes: e.target.value,
-            })
-          }
-          required
-        />
+          <input
+            type="number"
+            placeholder="Duration (minutes)"
+            value={newService.durationMinutes}
+            onChange={(e) =>
+              setNewService({
+                ...newService,
+                durationMinutes: e.target.value,
+              })
+            }
+            required
+          />
 
-        <button type="submit">Add Service</button>
-      </form>
+          <button type="submit">Add Service</button>
+        </form>
+      </section>
+
+      {message && <p className={`form-message ${messageType}`}>{message}</p>}
     </section>
   );
 }

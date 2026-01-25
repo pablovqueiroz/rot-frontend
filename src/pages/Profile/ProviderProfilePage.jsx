@@ -1,7 +1,6 @@
 import "./profile.css";
 import AvatarUploader from "../../components/Profile/AvatarUploader";
 import ProfileForm from "../../components/Profile/ProfileForm";
-import ProfileHeader from "../../components/profile/ProfileHeader";
 import axios from "axios";
 import { API_URL } from "../../config/config";
 import DangerZone from "../../components/Profile/DangerZone";
@@ -9,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import ServicesManager from "../../components/Profile/ServicesManager";
 import AvailabilitySection from "../../components/Profile/AvailabilitySection";
+import ProfileHeader from "../../components/Profile/ProfileHeader";
 
 const defaultImg =
   "https://res.cloudinary.com/dacvtyyst/image/upload/v1769168326/bwcwiefeph34flwiwohy.jpg";
@@ -187,15 +187,7 @@ function ProviderProfilePage() {
               </label>
             </form>
             <hr className="profile-divider" />
-
-            <ServicesManager
-              services={profile.services}
-              onServicesChange={(updatedServices) =>
-                setProfile((prev) => ({ ...prev, services: updatedServices }))
-              }
-            />
           </section>
-          <AvailabilitySection />
           <DangerZone
             label="Delete my account"
             onDelete={handleDeleteAccount}

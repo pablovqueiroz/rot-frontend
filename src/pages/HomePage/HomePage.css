@@ -1,7 +1,5 @@
 /* hero*/
-
 .hero {
-  background-color: var(--color-background);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,10 +19,69 @@
   margin-top: 10px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-secondary);
   font-weight: 600;
 }
 
 .hero-about-link button {
   padding: 10px;
 }
+
+/* pagination */
+
+.top-pagination,
+.bottom-pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+}
+
+.pagination button {
+  width: 28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: var(--calendar-hover);
+}
+
+.pagination button:disabled {
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+.pagination span {
+  min-width: 20px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--color-text-secondary);
+}
+
+
+/* redirectind provider */
+
+.home-content .form-hint {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+

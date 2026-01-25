@@ -1,13 +1,15 @@
 nav {
   height: 10vh;
+  width: 100%;
 }
 
 .nav-container {
+  position: sticky;
   display: flex;
   justify-content: space-between;
   color: var(--color-primary);
   text-shadow: 2px 2px 4px var(--color-primary);
-  box-shadow: 0 0 4px 0 var(--color-border);
+  text-align: center;
 }
 
 .nav-center,
@@ -56,7 +58,6 @@ nav {
   color: var(--color-success);
   text-shadow: 2px 2px 4px var(--color-success);
 }
-
 
 button:hover {
   opacity: 0.9;

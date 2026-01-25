@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../../config/config";
 
 function AvailabilitySection() {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [availability, setAvailability] = useState([
     { dayOfWeek: 1, enabled: false, startTime: "09:00", endTime: "18:00" },
     { dayOfWeek: 2, enabled: false, startTime: "09:00", endTime: "18:00" },
@@ -73,18 +75,29 @@ function AvailabilitySection() {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-      alert("Availability saved");
+      setErrorMessage(null);
+      setSuccessMessage("Availability saved successfully");
+      console.log("SAVED AVAILABILITY:", availabilityForBackend);
     } catch (err) {
       console.log(err);
-      alert("Failed to save availability");
+      setSuccessMessage(null);
+      setErrorMessage("Fail to save availability");
     }
   };
 
-  return (
-    <>
-      <h2 className="profile-section-title">Availability</h2>
+  useEffect(() => {
+  if (!successMessage && !errorMessage) return;
 
-      <div className="availability-manager">
+  const timer = setTimeout(() => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+  }, 3000); 
+
+  return () => clearTimeout(timer);
+}, [successMessage, errorMessage]);
+
+  return (
+    <div className="availability-manager">
         {availability.map((day) => (
           <div key={day.dayOfWeek} className="availability-item">
             <label className="availability-day">
@@ -137,10 +150,14 @@ function AvailabilitySection() {
             </div>
           </div>
         ))}
-      </div>
+
+        {successMessage && (
+          <p className="form-message success">{successMessage}</p>
+        )}
+        {errorMessage && <p className="form-message error">{errorMessage}</p>}
 
       <button onClick={handleSaveAvailability}>Save availability</button>
-    </>
+    </div>
   );
 }
 

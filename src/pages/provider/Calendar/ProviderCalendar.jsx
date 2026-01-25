@@ -5,7 +5,7 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import enUS from "date-fns/locale/en-US";
 import { useEffect, useState } from "react";
 import useCalendarEvents from "../../../hooks/useCalendarEvents";
-import { getAppointments } from "../Services/appointmentService";
+import { getAppointments } from "../../../Services/appointmentService";
 
 
 // Calendar event styles (react-big-calendar)

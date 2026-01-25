@@ -25,10 +25,7 @@
 }
 
 
-/*Dark Mode */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
+.dark {
     --color-primary: #3b82f6;
     --color-success: #4ade80;
     
@@ -47,4 +44,3 @@
     --calendar-blocked: #334155;
     --calendar-hover: #1e40af;
   }
-} */

@@ -1,0 +1,87 @@
+.appointment-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  background-color: var(--color-surface);
+  height: 250px;
+}
+
+.appointment-card h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.appointment-card p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.form-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--color-error);
+}
+
+.form-success {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--color-success);
+}
+
+.clear-button {
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+.clear-button:hover {
+  background-color: var(--color-background);
+}
+
+.appointment-contact {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.appointment-contact strong {
+  color: var(--color-text-primary);
+}
+
+.appointment-status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  width: fit-content;
+}
+
+.status-scheduled {
+  background-color: var(--color-warning);
+  color: #fff;
+}
+
+.status-confirmed {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.status-completed {
+  background-color: var(--color-success);
+  color: #fff;
+}
+
+.status-cancelled {
+  background-color: var(--color-error);
+  color: #fff;
+}

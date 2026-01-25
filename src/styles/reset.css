@@ -12,6 +12,8 @@ body {
 }
 
 body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: "Montserrat", sans-serif;

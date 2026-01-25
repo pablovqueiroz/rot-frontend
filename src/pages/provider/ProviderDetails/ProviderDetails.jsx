@@ -34,11 +34,13 @@ function ProviderDetails() {
     return <p>{error}</p>;
   }
 
-  const { name, image, bio, services = [] } = provider;
+  const { name, image, bio, services = [], phone, email } = provider;
 
   function handleGoHome() {
     nav("/");
   }
+  const hasAvailability =
+    provider.availability && provider.availability.length > 0;
 
   function handleBookService(service) {
     nav("/booking", {
@@ -58,11 +60,26 @@ function ProviderDetails() {
       <section className="provider-header">
         <img src={image.url} alt={name} className="provider-avatar" />
 
-        <div className="provider-info">
-          <h1>{name}</h1>
+       <div className="provider-info">
+  <h1>{name}</h1>
 
-          {bio && <p className="provider-bio">{bio}</p>}
-        </div>
+  {bio && <p className="provider-bio">{bio}</p>}
+
+  <div className="provider-contact">
+    {phone && (
+      <p>
+        <strong>Phone:</strong> {phone}
+      </p>
+    )}
+
+    {email && (
+      <p>
+        <strong>Email:</strong> {email}
+      </p>
+    )}
+  </div>
+</div>
+
       </section>
 
       <section className="provider-services-container">
@@ -82,15 +99,25 @@ function ProviderDetails() {
               <p>
                 <strong>Duration: </strong> {service.durationMinutes} min
               </p>
-              <button onClick={() => handleBookService(service)}>
+
+              <button
+                disabled={!hasAvailability}
+                onClick={() => handleBookService(service)}
+              >
                 Book service
               </button>
+
+              {!hasAvailability && (
+                <p className="form-hint">
+                  Sorry, there are no available times at the moment.
+                </p>
+              )}
             </li>
           ))}
         </ul>
-      <button className="back-home-button" onClick={handleGoHome}>
-        ⬅ Back to Home
-      </button>
+        <button className="back-home-button" onClick={handleGoHome}>
+          ⬅ Back to Home
+        </button>
       </section>
     </main>
   );

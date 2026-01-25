@@ -1,29 +1,9 @@
-import { useEffect, useState } from "react";
 import "./ProvidersList.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProviderCard from "../../../components/ProviderCard/ProviderCard";
-import { API_URL } from "../../../config/config";
 
-function ProvidersList() {
-  const [providers, setProviders] = useState([]);
-  const [loading, setLoading] = useState(true);
+function ProvidersList({ providers }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-  async function fetchProviders() {
-    try {
-      const { data } = await axios.get(`${API_URL}/providers`);
-      setProviders(data || []);
-    } catch (err) {
-      console.log("Error fetching providers data", err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  fetchProviders();
-}, []);
 
   const handleSelectProvider = (providerId) => {
     const token = localStorage.getItem("authToken");

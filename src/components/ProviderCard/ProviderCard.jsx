@@ -8,57 +8,54 @@ function ProviderCard({ provider, onSelect }) {
       ? Math.min(...services.map((service) => service.price))
       : null;
 
-  const serviceNames = services
-    .slice(0, 3)
-    .map((service) => service.name)
-    .join(" | ");
-
-  const hasMoreServices = services.length > 3;
-
   return (
     <div className={`provider-card ${!isActive ? "inactive" : ""}`}>
-      <div>
-        <img
-          src={image?.url}
-          alt={name}
-          className="provider-avatar"
-          loading="lazy"
-        />
-      </div>
-
       <section className="provider-content">
-        <h3 className="provider-name">{name}</h3>
-
-        {bio && (
-          <p className="provider-bio">
-            {bio.length > 100 ? bio.slice(0, 100) + "..." : bio}
-          </p>
-        )}
-
         <article className="provider-info">
-          <span className="provider-services">
-            <strong>Services:</strong>
-            <br />
-            {serviceNames}
-            {hasMoreServices && "..."}
-          </span>
+          <h4 className="services-title">Services by {name}</h4>
+
+          <ul className="provider-services">
+            {services.map((service) => (
+              <li key={service.name} className="provider-service">
+                {service.name}
+              </li>
+            ))}
+          </ul>
         </article>
 
-        <section className="provider-footer">
-          {startingPrice !== null && (
-            <span>
-              <strong>From:</strong> €{startingPrice}
-            </span>
-          )}
+        <article className="card-profile-info">
+          <img
+            src={image?.url}
+            alt={name}
+            className="provider-avatar"
+            loading="lazy"
+          />
+          <article className="card-profile-info-content">
+            <h3 className="provider-name">About {name}</h3>
 
-          <button
-            className="provider-button"
-            disabled={!isActive}
-            onClick={() => onSelect(provider)}
-          >
-            {isActive ? "Book appointment" : "Unavailable"}
-          </button>
-        </section>
+            {bio && (
+              <p className="provider-bio">
+                {bio.length > 100 ? bio.slice(0, 100) + "..." : bio}
+              </p>
+            )}
+
+          <section className="provider-footer">
+            {startingPrice !== null && (
+              <span className="service-price">
+                <strong>Starting from:</strong> €{startingPrice}
+              </span>
+            )}
+
+            <button
+              className="provider-button"
+              disabled={!isActive}
+              onClick={() => onSelect(provider)}
+              >
+              {isActive ? "Book now" : "Not available"}
+            </button>
+          </section>
+              </article>
+        </article>
       </section>
     </div>
   );
