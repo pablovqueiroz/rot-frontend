@@ -2,8 +2,8 @@ import "./MyServices.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
-import ServicesManager from "../../../components/Profile/ServicesManager";
-import AvailabilitySection from "../../../components/Profile/AvailabilitySection";
+import ServicesManager from "../../../components/Provider/ServicesManager";
+import AvailabilitySection from "../../../components/Provider/AvailabilitySection";
 
 function MyServices() {
   const [services, setServices] = useState([]);

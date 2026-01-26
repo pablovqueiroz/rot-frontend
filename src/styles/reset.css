@@ -33,6 +33,10 @@ a {
   text-decoration: none;
   color: inherit;
 }
+a.active {
+  color: var(--color-success);
+  text-shadow: var(--color-success);
+}
 
 img,
 picture,

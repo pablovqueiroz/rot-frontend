@@ -1,27 +1,59 @@
 import "./Navbar.css";
 import { Link, NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { ThemeContext } from "../../context/ThemeContext";
+import { API_URL } from "../../config/config";
+import axios from "axios";
 
 function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { isLoggedIn, currentUser, handleLogout, isLoading } =
     useContext(AuthContext);
 
-  if (isLoading) {
-    return null;
-  }
+  const [displayName, setDisplayName] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  let profilePath = "";
+  // find user/provider
+  useEffect(() => {
+    if (!currentUser) return;
 
-  if (isLoggedIn && currentUser) {
-    profilePath =
-      currentUser.role === "provider" ? "/provider/profile" : "/user/profile";
-  }
+    async function fetchProfile() {
+      const token = localStorage.getItem("authToken");
+
+      try {
+        const endpoint =
+          currentUser.role === "provider"
+            ? `${API_URL}/providers/me`
+            : `${API_URL}/users/me`;
+
+        const { data } = await axios.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setDisplayName(data.name);
+        setProfileImage(data.image?.url || null);
+      } catch (error) {
+        console.log("FETCH NAVBAR PROFILE ERROR:", error);
+        setDisplayName(null);
+        setProfileImage(null);
+      }
+    }
+
+    fetchProfile();
+  }, [currentUser]);
+
+  if (isLoading) return null;
+
+  const profilePath =
+    currentUser?.role === "provider" ? "/provider/profile" : "/user/profile";
 
   return (
     <nav className="nav-container">
+      {/* logo */}
       <section className="nav-left">
         <Link to="/">
           <img
@@ -31,26 +63,16 @@ function Navbar() {
           />
         </Link>
       </section>
+
+      {/* public menu */}
       <section className="nav-center">
-        {currentUser?.role !== "provider" && (<NavLink to="/">Home</NavLink>)}
-        <NavLink to="/about">About</NavLink>
-        {isLoggedIn && <NavLink to="/my-appointments">My Appointments</NavLink>}
-        {currentUser?.role === "provider" && (<NavLink to="/provider/services">My services</NavLink>)}
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/about">About rot</NavLink>
       </section>
 
+      {/* user/prov menu*/}
       <section className="nav-right">
-        {!isLoggedIn && <NavLink to="/login">Login / SignUp</NavLink>}
-
-        {isLoggedIn && (
-          <>
-            <NavLink to={profilePath}>{currentUser?.name || "Profile"}</NavLink>
-
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
-        )}
-
+        {/* theme */}
         <label className="ui-switch">
           <input
             type="checkbox"
@@ -61,6 +83,66 @@ function Navbar() {
             <div className="circle"></div>
           </div>
         </label>
+        {!isLoggedIn && <NavLink to="/login">Login / SignUp</NavLink>}
+
+        {isLoggedIn && (
+          <div className="nav-user">
+            <button
+              className="nav-avatar-button"
+              onClick={() => setMenuOpen((prev) => !prev)}
+            >
+              <img
+                className="nav-avatar"
+                src={
+                  profileImage ||
+                  `https://ui-avatars.com/api/?name=${displayName}`
+                }
+                alt="profile"
+              />
+            </button>
+
+            {menuOpen && (
+              <div className="nav-dropdown">
+                <p className="nav-dropdown-hello">Hello {displayName}</p>
+
+                <NavLink to={profilePath} onClick={() => setMenuOpen(false)}>
+                  My Profile
+                </NavLink>
+
+                {currentUser?.role === "provider" && (
+                  <>
+                    <NavLink
+                      to="/provider/services"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      My Services
+                    </NavLink>
+
+                    <NavLink
+                      to="/my-appointments"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      My Appointments
+                    </NavLink>
+                  </>
+                )}
+
+                {currentUser?.role === "user" && (
+                  <NavLink
+                    to="/my-appointments"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    My Appointments
+                  </NavLink>
+                )}
+
+                <button className="nav-logout" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </nav>
   );

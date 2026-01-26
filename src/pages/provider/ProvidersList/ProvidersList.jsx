@@ -1,6 +1,6 @@
 import "./ProvidersList.css";
 import { useNavigate } from "react-router-dom";
-import ProviderCard from "../../../components/ProviderCard/ProviderCard";
+import ProviderCard from "../../../components/Provider/ProviderCard";
 
 function ProvidersList({ providers }) {
   const navigate = useNavigate();

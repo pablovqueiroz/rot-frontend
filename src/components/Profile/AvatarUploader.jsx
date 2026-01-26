@@ -62,7 +62,7 @@ function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
     <div className="avatar-uploader">
   <img src={imageUrl} alt="Profile avatar" />
 
-  <label className="avatar-upload-button">
+  <label className="avatar-change-button">
     Change photo
     <input
       type="file"
@@ -79,7 +79,7 @@ function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
   )}
 
   <button
-    className="avatar-confirm-button"
+    className="avatar-upload-button"
     type="button"
     onClick={handleUpload}
     disabled={!selectedFile || isUploading}

@@ -97,48 +97,48 @@ function UserProfilePage() {
 
   return (
     <main className="profile-page">
-      <ProfileHeader />
-
       <section className="profile-card">
-        <AvatarUploader imageUrl={image?.url || defaultImg} role="user" />
+        <ProfileHeader />
+
         <div className="profile-form">
-          <h1>My Profile</h1>
+          <section className="first-block">
+            <AvatarUploader imageUrl={image?.url || defaultImg} role="user" />
+            <ProfileForm onSubmit={handleUpdateProfile}>
+              <label>
+                Email
+                <input type="email" value={email} disabled />
+              </label>
 
-          <ProfileForm onSubmit={handleUpdateProfile}>
-            <label>
-              Name
-              <input
-                type="text"
-                value={name}
-                onChange={(e) =>
-                  setProfile({ ...profile, name: e.target.value })
-                }
-              />
-            </label>
+              <label>
+                Name
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) =>
+                    setProfile({ ...profile, name: e.target.value })
+                  }
+                />
+              </label>
 
-            <label>
-              Phone
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) =>
-                  setProfile({ ...profile, phone: e.target.value })
-                }
-              />
-            </label>
-
-            <label>
-              Email
-              <input type="email" value={email} disabled />
-            </label>
-          </ProfileForm>
-
+              <label>
+                Phone
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) =>
+                    setProfile({ ...profile, phone: e.target.value })
+                  }
+                />
+              </label>
+            </ProfileForm>
+          </section>
           <hr className="profile-divider" />
 
-          <section className="profile-security">
+          <section className="security-header">
             <h2>Security</h2>
-
-            <form>
+          </section>
+          <section className="profile-security">
+            <form className="profile-security-form">
               <label>
                 Current password
                 <input type="password" />
@@ -154,13 +154,15 @@ function UserProfilePage() {
                 <input type="password" />
               </label>
 
-              <button type="submit">Change password</button>
+              <section className="change-password-button">
+                <button type="submit">Change password</button>
+              </section>
             </form>
-          </section>
           <DangerZone
             label="Delete my account"
             onDelete={handleDeleteAccount}
           />
+          </section>
         </div>
       </section>
     </main>

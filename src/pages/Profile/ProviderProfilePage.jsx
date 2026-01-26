@@ -6,8 +6,6 @@ import { API_URL } from "../../config/config";
 import DangerZone from "../../components/Profile/DangerZone";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
-import ServicesManager from "../../components/Profile/ServicesManager";
-import AvailabilitySection from "../../components/Profile/AvailabilitySection";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
 
 const defaultImg =
@@ -113,64 +111,63 @@ function ProviderProfilePage() {
 
   return (
     <main className="profile-page">
-      <ProfileHeader />
-
       <section className="profile-card">
-        <AvatarUploader
-          imageUrl={image?.url || defaultImg}
-          role="provider"
-          onImageUpdated={handleImageUpdated}
-        />
+        <ProfileHeader />
 
         <div className="profile-form">
-          <h1>My Profile</h1>
+          <section className="first-block">
+            <AvatarUploader
+              imageUrl={image?.url || defaultImg}
+              role="provider"
+              onImageUpdated={handleImageUpdated}
+            />
+            <ProfileForm onSubmit={handleUpdateProfile}>
+              <label>
+                Email
+                <input type="email" value={email} disabled />
+              </label>
+              <label>
+                Name
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) =>
+                    setProfile({ ...profile, name: e.target.value })
+                  }
+                />
+              </label>
 
-          <ProfileForm onSubmit={handleUpdateProfile}>
-            <label>
-              Name
-              <input
-                type="text"
-                value={name}
-                onChange={(e) =>
-                  setProfile({ ...profile, name: e.target.value })
-                }
-              />
-            </label>
+              <label>
+                Phone
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) =>
+                    setProfile({ ...profile, phone: e.target.value })
+                  }
+                />
+              </label>
 
-            <label>
-              Phone
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) =>
-                  setProfile({ ...profile, phone: e.target.value })
-                }
-              />
-            </label>
-
-            <label>
-              Bio
-              <textarea
-                rows="4"
-                value={bio}
-                onChange={(e) =>
-                  setProfile({ ...profile, bio: e.target.value })
-                }
-              />
-            </label>
-
-            <label>
-              Email
-              <input type="email" value={email} disabled />
-            </label>
-          </ProfileForm>
-
+              <label>
+                Bio
+                <textarea
+                  rows="4"
+                  value={bio}
+                  onChange={(e) =>
+                    setProfile({ ...profile, bio: e.target.value })
+                  }
+                />
+              </label>
+            </ProfileForm>
+          </section>
           <hr className="profile-divider" />
 
-          <section className="profile-security">
+          <section className="security-header">
             <h2>Security</h2>
+          </section>
 
-            <form>
+          <section className="profile-security">
+            <form className="profile-security-form">
               <label>
                 Current password
                 <input type="password" />
@@ -185,13 +182,17 @@ function ProviderProfilePage() {
                 Confirm new password
                 <input type="password" />
               </label>
+
+              <section className="change-password-button">
+                <button type="submit">Change password</button>
+              </section>
             </form>
-            <hr className="profile-divider" />
+
+            <DangerZone
+              label="Delete my account"
+              onDelete={handleDeleteAccount}
+            />
           </section>
-          <DangerZone
-            label="Delete my account"
-            onDelete={handleDeleteAccount}
-          />
         </div>
       </section>
     </main>
