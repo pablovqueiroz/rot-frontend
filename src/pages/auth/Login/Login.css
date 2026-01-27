@@ -56,11 +56,6 @@
   border-color: var(--color-primary);
 }
 
-.login-error {
-  font-size: 13px;
-  color: var(--color-error);
-}
-
 .login-button {
   margin-top: 8px;
   padding: 12px;

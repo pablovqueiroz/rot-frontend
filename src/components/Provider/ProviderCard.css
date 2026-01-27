@@ -1,5 +1,5 @@
 .provider-card {
-  min-width: 420px;
+  max-width: 700px;
   border-radius: 3px;
   background-color: var(--color-surface);
   box-shadow: 0 0 4px 0 var(--color-border);
@@ -52,9 +52,7 @@
   padding-left: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
-
 
 .provider-avatar {
   width: 72px;
@@ -64,17 +62,24 @@
 }
 
 .provider-name {
-   padding: 7px 0;
   font-size: 15px;
   font-weight: 600;
-}
-.service-price {
-  padding-top: 10px;
 }
 
 .provider-footer {
   margin-top: auto;
   display: flex;
-  justify-content: space-between;
-  align-items: center
+  justify-content:flex-end;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+.provider-card {
+    width: 350px;
+    border-radius: 3px;
+    background-color: var(--color-surface);
+    box-shadow: 0 0 4px 0 var(--color-border);
+    display: flex;
+    flex-direction: column;
+}
 }

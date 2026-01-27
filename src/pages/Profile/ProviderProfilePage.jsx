@@ -7,12 +7,22 @@ import DangerZone from "../../components/Profile/DangerZone";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
+import Message from "../../components/Message/Message";
 
 const defaultImg =
   "https://res.cloudinary.com/dacvtyyst/image/upload/v1769168326/bwcwiefeph34flwiwohy.jpg";
 
 function ProviderProfilePage() {
   const { isLoading, authenticateUser, handleLogout } = useContext(AuthContext);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -66,10 +76,10 @@ function ProviderProfilePage() {
       );
 
       await authenticateUser();
-      alert("Profile updated successfully");
+      setSuccessMessage("Profile updated successfully.");
     } catch (error) {
       console.log(error);
-      alert("Failed to update profile.");
+      setErrorMessage("Failed to update profile.");
     }
   };
 
@@ -101,13 +111,45 @@ function ProviderProfilePage() {
       handleLogout();
     } catch (error) {
       console.log(error);
-      alert("Failed to delete account.");
+      setErrorMessage("Failed to delete account.");
     }
   };
 
   if (isLoading) {
     return <p>Loading profile...</p>;
   }
+
+  //update password
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const { data } = await axios.put(
+        `${API_URL}/auth/change-password`,
+        passwordForm,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      });
+      setSuccessMessage(data.message);
+      setErrorMessage(null);
+    } catch (error) {
+      console.log(error)
+      setErrorMessage(
+        error.response?.data?.message || "Failed to change password.",
+      );
+    }
+  };
 
   return (
     <main className="profile-page">
@@ -167,23 +209,66 @@ function ProviderProfilePage() {
           </section>
 
           <section className="profile-security">
-            <form className="profile-security-form">
+            <form
+              className="profile-security-form"
+              onSubmit={handleChangePassword}
+            >
               <label>
                 Current password
-                <input type="password" />
+                <input
+                  type="password"
+                  value={passwordForm.currentPassword}
+                  onChange={(e) =>
+                    setPasswordForm({
+                      ...passwordForm,
+                      currentPassword: e.target.value,
+                    })
+                  }
+                />
               </label>
 
               <label>
                 New password
-                <input type="password" />
+                <input
+                  type="password"
+                  value={passwordForm.newPassword}
+                  onChange={(e) =>
+                    setPasswordForm({
+                      ...passwordForm,
+                      newPassword: e.target.value,
+                    })
+                  }
+                />
               </label>
 
               <label>
                 Confirm new password
-                <input type="password" />
+                <input
+                  type="password"
+                  value={passwordForm.confirmNewPassword}
+                  onChange={(e) =>
+                    setPasswordForm({
+                      ...passwordForm,
+                      confirmNewPassword: e.target.value,
+                    })
+                  }
+                />
               </label>
 
               <section className="change-password-button">
+                <Message
+                  type="success"
+                  text={successMessage}
+                  clearMessage={setSuccessMessage}
+                />
+
+                <Message
+                  type="error"
+                  text={errorMessage}
+                  clearMessage={setErrorMessage}
+                  duration={4000}
+                />
+
                 <button type="submit">Change password</button>
               </section>
             </form>

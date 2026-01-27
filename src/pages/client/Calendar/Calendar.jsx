@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
+import Message from "../../../components/Message/Message";
 
 function Calendar() {
   const location = useLocation();
   const nav = useNavigate();
   const bookingData = location.state;
-
   const [provider, setProvider] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -17,46 +17,64 @@ function Calendar() {
   const [successMessage, setSuccessMessage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!bookingData) {
-      nav("/");
-    }
-  }, [bookingData, nav]);
-
   //get providers + appointments
   useEffect(() => {
-    if (!bookingData) return;
-    const token = localStorage.getItem("authToken");
-    const { providerId, date } = bookingData;
+    if (!bookingData || !bookingData.providerId) {
+      setErrorMessage("Invalid booking data.");
+      setIsLoading(false);
+      return;
+    }
 
-    async function fetchData() {
+    async function fetchProvider() {
       try {
-        const [providerRes, appointmentsRes] = await Promise.all([
-          axios.get(`${API_URL}/providers/${providerId}`),
-          axios.get(`${API_URL}/appointments`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-        ]);
-        setProvider(providerRes.data);
-        const filteredAppointments = appointmentsRes.data.filter(
-          (appt) =>
-            appt.provider._id === providerId &&
-            appt.date.slice(0, 10) === date &&
-            appt.status !== "cancelled",
-        );
-        setAppointments(filteredAppointments);
-      } catch (err) {
-        console.log(err);
-        setErrorMessage("Fail to fetch data", err);
+        const { providerId } = bookingData;
+
+        const { data } = await axios.get(`${API_URL}/providers/${providerId}`);
+
+        setProvider(data);
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Failed to load provider.";
+
+        console.log(errorMessage, error);
+        setErrorMessage(errorMessage);
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchData();
-  }, [bookingData, nav]);
+    fetchProvider();
+  }, [bookingData]);
+
+  //calculate slots (to unblock slots)
+  useEffect(() => {
+  if (!bookingData?.providerId || !bookingData?.date) return;
+
+  async function fetchBlockedAppointments() {
+    try {
+      const { data } = await axios.get(
+        `${API_URL}/appointments/blocked`,
+        {
+          params: {
+            providerId: bookingData.providerId,
+            date: bookingData.date,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      setAppointments(data);
+    } catch (err) {
+      console.log("Failed to reload blocked appointments", err);
+      setAppointments([]);
+    }
+  }
+
+  fetchBlockedAppointments();
+}, [bookingData?.providerId, bookingData?.date]);
+
 
   //get slots availables
   useEffect(() => {
@@ -118,17 +136,9 @@ function Calendar() {
     }
 
     setAvailableSlots(slots);
-  }, [provider?.availability, appointments, bookingData]);
+  }, [provider, appointments, bookingData]);
 
-  if (!bookingData) {
-    return <p>Missing booking data</p>;
-  }
-
-  if (isLoading) {
-    return <p>Loading calendar...</p>;
-  }
-
-  const { service, date, providerId } = bookingData;
+  const { service, date, providerId } = bookingData || {};
 
   function timeToMinutes(time) {
     const [hour, min] = time.split(":").map(Number);
@@ -151,8 +161,6 @@ function Calendar() {
   }) {
     try {
       setIsSubmitting(true);
-      setErrorMessage(null);
-      setSuccessMessage(null);
 
       await axios.post(
         `${API_URL}/appointments`,
@@ -169,42 +177,59 @@ function Calendar() {
           },
         },
       );
-
+      setErrorMessage(null);
       setSuccessMessage(
         "Your appointment was created and is awaiting provider confirmation.",
       );
-
-      setTimeout(() => {
-        nav("/my-appointments");
-      }, 3000);
     } catch (err) {
-      console.log(err);
-      setErrorMessage(
-        "This time slot is no longer available. Please choose another one.",
-      );
+      console.log("Create appointment error:", err);
+      setErrorMessage("Failed to create appointment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  useEffect(() => {
+    if (!successMessage) return;
+
+    const timer = setTimeout(() => {
+      nav("/my-appointments");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [successMessage, nav]);
+
+  useEffect(() => {
+    if (!bookingData) {
+      nav("/");
+    }
+  }, [bookingData, nav]);
+
+  if (!bookingData) {
+    return null;
+  }
+
+  if (isLoading) {
+    return <main className="calendar-page">Loading calendar...</main>;
+  }
+
   return (
     <main className="calendar-page">
       <section className="calendar-title">
-        {successMessage && (
-          <div className="booking-success">
-            <p>{successMessage}</p>
-            <p>You will be redirected shortly.</p>
-          </div>
-        )}
-
-        {errorMessage && (
-          <div className="booking-error">
-            <p>{errorMessage}</p>
-          </div>
-        )}
-
         <h1>Select a time</h1>
       </section>
+      <Message
+        type="success"
+        text={successMessage}
+        clearMessage={setSuccessMessage}
+      />
+
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
       <p>
         {service.name} — {service.durationMinutes} min
       </p>

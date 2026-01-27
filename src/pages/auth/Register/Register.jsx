@@ -3,6 +3,7 @@ import "./Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config/config";
 import axios from "axios";
+import Message from "../../../components/Message/Message";
 
 function Register() {
   const [name, setName] = useState("");
@@ -11,12 +12,11 @@ function Register() {
   const [role, setRole] = useState("user");
   const [image, setImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const nav = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
 
     if (!name || !email || !password || !image) {
       setErrorMessage("Please fill in all fields and select an image.");
@@ -38,8 +38,9 @@ function Register() {
     try {
       await axios.post(endpoint, formData);
       nav("/login");
+      setErrorMessage(null);
     } catch (err) {
-      console.log(err);
+      console.log("Register error:", err);
       setErrorMessage(err.response?.data?.errorMessage || "Signup failed");
     } finally {
       setIsSubmitting(false);
@@ -55,7 +56,7 @@ function Register() {
           <section className="role-selector">
             <button
               type="button"
-              className={role === "user" ? "active" : ""} 
+              className={role === "user" ? "active" : ""}
               onClick={() => setRole("user")}
             >
               Client
@@ -109,7 +110,12 @@ function Register() {
             {!image && <small className="hint">Image is required</small>}
           </section>
 
-          {errorMessage && <p className="register-error">{errorMessage}</p>}
+          <Message
+            type="error"
+            text={errorMessage}
+            clearMessage={setErrorMessage}
+            duration={4000}
+          />
 
           <button className="register-button" disabled={isSubmitting}>
             {isSubmitting ? "Creating account..." : "Sign up"}

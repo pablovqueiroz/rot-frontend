@@ -9,7 +9,7 @@ footer {
   align-items: center;
   color: var(--color-primary);
   text-shadow: 2px 2px 4px var(--color-primary);
-  box-shadow: 0 0 4px 0 var(--color-border);
+  box-shadow: 0 -4px 8px -4px var(--color-border);
   opacity: 0.8;
 }
 
@@ -40,3 +40,32 @@ footer {
   text-align: center;
   padding: 20px;
 }
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+
+    text-align: center;
+  }
+
+  .git-links {
+    justify-content: center;
+  }
+
+  .copy-right {
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .git-links a {
+    font-size: 0.7em;
+  }
+
+  .git-icon {
+    font-size: 1.8em;
+  }
+}
+

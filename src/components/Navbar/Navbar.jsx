@@ -13,7 +13,9 @@ function Navbar() {
 
   const [displayName, setDisplayName] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  
+  //class to change menu to clicked in mobile screens
+  const [menuOpen, setMenuOpen] = useState(false); 
 
   // find user/provider
   useEffect(() => {
@@ -100,9 +102,9 @@ function Navbar() {
                 alt="profile"
               />
             </button>
-
-            {menuOpen && (
-              <div className="nav-dropdown">
+            
+            {/* menu dropdown*/}
+              <div className={`nav-dropdown ${menuOpen ? "open" : ""}`}>
                 <p className="nav-dropdown-hello">Hello {displayName}</p>
 
                 <NavLink to={profilePath} onClick={() => setMenuOpen(false)}>
@@ -140,7 +142,7 @@ function Navbar() {
                   Logout
                 </button>
               </div>
-            )}
+            
           </div>
         )}
       </section>

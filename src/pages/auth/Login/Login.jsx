@@ -4,17 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
+import Message from "../../../components/Message/Message";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const { authenticateUser } = useContext(AuthContext);
-   const nav = useNavigate();
+  const nav = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
     try {
       const { data } = await axios.post(`${API_URL}/auth/login`, {
         password,
@@ -29,8 +29,9 @@ function Login() {
       } else {
         nav("/user/profile");
       }
+      setErrorMessage(null);
     } catch (err) {
-      console.log(err);
+      console.log("Login error:", err);
       setErrorMessage(
         err.response?.data?.errorMessage || "Something went wrong",
       );
@@ -40,7 +41,7 @@ function Login() {
   return (
     <div className="login-wrapper">
       <section className="login-card">
-        <h3 className="login-title">Welcome back!</h3>
+        <h3 className="login-title">Welcome!</h3>
 
         <form className="login-form" onSubmit={handleLogin}>
           <article className="login-field">
@@ -60,12 +61,16 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Your password..."
-
             />
           </article>
 
-          {errorMessage && <p className="login-error">{errorMessage}</p>}
-          
+          <Message
+            type="error"
+            text={errorMessage}
+            clearMessage={setErrorMessage}
+            duration={4000}
+          />
+
           <button className="login-button">Login</button>
 
           <p className="login-footer">

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../config/config";
+import Message from "../Message/Message";
 
 function AvailabilitySection() {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -85,7 +86,7 @@ function AvailabilitySection() {
         },
       );
       setErrorMessage(null);
-      setSuccessMessage("Availability  successfully");
+      setSuccessMessage("Availability saved successfully.");
       console.log("Saved Availability:", availabilityForBackend);
     } catch (err) {
       console.log(err);
@@ -93,19 +94,6 @@ function AvailabilitySection() {
       setErrorMessage("Fail to save availability");
     }
   };
-
-  //is active
-
-  useEffect(() => {
-    if (!successMessage && !errorMessage) return;
-
-    const timer = setTimeout(() => {
-      setSuccessMessage(null);
-      setErrorMessage(null);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [successMessage, errorMessage]);
 
   return (
     <div className="availability-manager">
@@ -162,10 +150,18 @@ function AvailabilitySection() {
         </div>
       ))}
 
-      {successMessage && (
-        <p className="form-message success">{successMessage}</p>
-      )}
-      {errorMessage && <p className="form-message error">{errorMessage}</p>}
+      <Message
+        type="success"
+        text={successMessage}
+        clearMessage={setSuccessMessage}
+      />
+
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
 
       <button onClick={handleSaveAvailability}>Save availability</button>
     </div>

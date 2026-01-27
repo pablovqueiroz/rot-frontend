@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
+import Message from "../../../components/Message/Message";
 
 function Booking() {
   const location = useLocation();
   const navigate = useNavigate();
   const bookingData = location.state;
-
   const [provider, setProvider] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     if (!bookingData) {
@@ -21,7 +21,11 @@ function Booking() {
   }, [bookingData, navigate]);
 
   useEffect(() => {
-    if (!bookingData) return;
+    if (!bookingData) {
+      setErrorMessage("Invalid booking data.");
+      setIsLoading(false);
+      return;
+    }
 
     const { providerId } = bookingData;
 
@@ -29,10 +33,10 @@ function Booking() {
       try {
         const { data } = await axios.get(`${API_URL}/providers/${providerId}`);
         setProvider(data);
+        setErrorMessage(null);
       } catch (err) {
-        console.log(err);
-        setError("Provider not found");
-        navigate("/");
+        console.log("Failed to load provider:", err);
+        setErrorMessage("Provider not found.");
       } finally {
         setIsLoading(false);
       }
@@ -41,15 +45,28 @@ function Booking() {
     fetchProvider();
   }, [bookingData, navigate]);
 
-  if (!bookingData || isLoading) return null;
+  if (isLoading) {
+    return <main className="booking-page">Loading booking information...</main>;
+  }
 
-  const { providerId, service } = bookingData;
+  if (!bookingData) {
+    navigate("/");
+    return null;
+  }
+
+  const { providerId, service } = bookingData || {};
 
   const today = new Date().toISOString().split("T")[0];
 
   return (
     <main className="booking-page">
       <h1 className="booking-title">Book service</h1>
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
 
       <section className="booking-service-card">
         <h2>{service.name}</h2>

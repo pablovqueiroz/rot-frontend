@@ -4,21 +4,28 @@ import axios from "axios";
 import { API_URL } from "../../../config/config";
 import ServicesManager from "../../../components/Provider/ServicesManager";
 import AvailabilitySection from "../../../components/Provider/AvailabilitySection";
+import Message from "../../../components/Message/Message";
 
 function MyServices() {
   const [services, setServices] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchServices = async () => {
       const token = localStorage.getItem("authToken");
 
-      const { data } = await axios.get(`${API_URL}/providers/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        const { data } = await axios.get(`${API_URL}/providers/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      setServices(data.services || []);
+        setServices(data.services || []);
+      } catch (error) {
+        console.log("Failed to load services. ", error);
+        setErrorMessage("Failed to load services.");
+      }
     };
 
     fetchServices();
@@ -26,6 +33,12 @@ function MyServices() {
 
   return (
     <main className="my-services-page">
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
       <section className="availability-card">
         <header className="my-services-header">
           <h1>Availability</h1>

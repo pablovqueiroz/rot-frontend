@@ -2,10 +2,12 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { API_URL } from "../../config/config";
+import Message from "../Message/Message";
 
-function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
+function AvatarUploader({ imageUrl, role, onImageUpdated }) {
   const { authenticateUser } = useContext(AuthContext);
-
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -14,6 +16,7 @@ function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
     if (!file) return;
 
     setSelectedFile(file);
+    setErrorMessage(null);
   };
 
   const handleUpload = async () => {
@@ -50,9 +53,15 @@ function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
       onImageUpdated({ url, public_id });
       await authenticateUser();
       setSelectedFile(null);
+      setSuccessMessage("Upload successful");
     } catch (error) {
-      console.log(error);
-      alert("Failed to upload image");
+      console.log("Image upload error:", error);
+
+      if (error.response?.data?.message) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("Failed to upload image. ");
+      }
     } finally {
       setIsUploading(false);
     }
@@ -60,34 +69,43 @@ function AvatarUploader({ imageUrl, role, onImageUpdated  }) {
 
   return (
     <div className="avatar-uploader">
-  <img src={imageUrl} alt="Profile avatar" />
+      <img src={imageUrl} alt="Profile avatar" />
 
-  <label className="avatar-change-button">
-    Change photo
-    <input
-      type="file"
-      accept="image/*"
-      hidden
-      onChange={handleFileSelect}
-    />
-  </label>
+      <label className="avatar-change-button">
+        Change photo
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleFileSelect}
+        />
+      </label>
 
-  {selectedFile && (
-    <p className="avatar-file-info">
-      Selected file: {selectedFile.name}
-    </p>
-  )}
+      {selectedFile && (
+        <p className="avatar-file-info">Selected file: {selectedFile.name}</p>
+      )}
 
-  <button
-    className="avatar-upload-button"
-    type="button"
-    onClick={handleUpload}
-    disabled={!selectedFile || isUploading}
-  >
-    {isUploading ? "Uploading..." : "Upload image"}
-  </button>
-</div>
+      <button
+        className="avatar-upload-button"
+        type="button"
+        onClick={handleUpload}
+        disabled={!selectedFile || isUploading}
+      >
+        {isUploading ? "Uploading..." : "Upload image"}
+      </button>
+      <Message
+        type="success"
+        text={successMessage}
+        clearMessage={setSuccessMessage}
+      />
 
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
+    </div>
   );
 }
 

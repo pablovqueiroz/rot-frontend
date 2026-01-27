@@ -1,5 +1,7 @@
 .provider-details {
   padding: 32px;
+  max-width: 1280px;
+  margin: auto;
 }
 
 .provider-header {
@@ -22,6 +24,15 @@
 .provider-info {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+
+.provider-info h1 {
+  margin: 0 0 16px 0;
+}
+
+.provider-contact {
+  padding-top: 15px;
 }
 
 .provider-info h2 {
@@ -39,7 +50,7 @@
   flex-direction: column;
 }
 
-.services-list {
+.services-list-details {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
@@ -66,7 +77,8 @@
 
 .service-card button {
   margin: 10px 0 0 auto;
-  width: 100%;
+  width: fit-content;
+  margin: 15px auto 0;
 }
 
 button:disabled {
@@ -84,4 +96,42 @@ button:disabled {
 .back-home-button {
   width: fit-content;
   margin: 20px auto 0;
+}
+
+@media (max-width: 768px) {
+  .provider-details {
+    padding: 16px;
+  }
+
+  .provider-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .provider-avatar {
+    margin: auto;
+    width: 120px;
+    height: 120px;
+  }
+
+  .provider-info {
+    width: 100%;
+  }
+
+  h1 {
+    margin: 5px auto;
+    text-align: center;
+    font-size: 2em;
+  }
+
+  .provider-services-container h1 {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-list {
+    grid-template-columns: 1fr;
+  }
 }

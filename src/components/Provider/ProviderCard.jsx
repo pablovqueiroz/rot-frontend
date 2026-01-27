@@ -16,7 +16,10 @@ function ProviderCard({ provider, onSelect }) {
 
           <ul className="provider-services">
             {services.map((service) => (
-              <li key={service.name} className="provider-service">
+              <li
+                key={service.id || `${service.name}-${service.price}`}
+                className="provider-service"
+              >
                 {service.name}
               </li>
             ))}
@@ -38,24 +41,24 @@ function ProviderCard({ provider, onSelect }) {
                 {bio.length > 100 ? bio.slice(0, 100) + "..." : bio}
               </p>
             )}
-
-          <section className="provider-footer">
-            {startingPrice !== null && (
-              <span className="service-price">
-                <strong>Starting from:</strong> €{startingPrice}
-              </span>
-            )}
-
-            <button
-              className="provider-button"
-              disabled={!isActive}
-              onClick={() => onSelect(provider)}
-              >
-              {isActive ? "Book now" : "Not available"}
-            </button>
-          </section>
-              </article>
+          </article>
         </article>
+
+        <section className="provider-footer">
+          {startingPrice !== null && (
+            <span className="service-price">
+              <strong>Starting from:</strong> €{startingPrice}
+            </span>
+          )}
+
+          <button
+            className="provider-button"
+            disabled={!isActive}
+            onClick={() => onSelect(provider)}
+          >
+            {isActive ? "Book now" : "Not available"}
+          </button>
+        </section>
       </section>
     </div>
   );

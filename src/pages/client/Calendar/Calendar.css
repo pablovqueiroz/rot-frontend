@@ -45,37 +45,3 @@
   color: var(--color-text-secondary);
   text-align: center;
 }
-
-.booking-success {
-  margin: 20px 0;
-  padding: 16px;
-  background-color: var(--color-success);
-  color: #fff;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.booking-success p {
-  margin-top: 6px;
-  font-size: 13px;
-  opacity: 0.9;
-}
-
-.booking-success {
-  margin: 16px 0;
-  padding: 14px;
-  background-color: var(--color-success);
-  color: white;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.booking-error {
-  margin: 16px 0;
-  padding: 14px;
-  background-color: var(--color-error);
-  color: white;
-  border-radius: 8px;
-  font-size: 14px;
-}

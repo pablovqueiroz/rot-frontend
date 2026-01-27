@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../config/config";
+import Message from "../Message/Message";
 
 function ServicesManager({ services = [], onServicesChange }) {
-  const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const [newService, setNewService] = useState({
     name: "",
@@ -28,9 +29,6 @@ function ServicesManager({ services = [], onServicesChange }) {
   const handleAddService = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
-
-    setMessage(null);
-
     try {
       const { data } = await axios.post(
         `${API_URL}/providers/services`,
@@ -54,12 +52,11 @@ function ServicesManager({ services = [], onServicesChange }) {
         durationMinutes: "",
       });
 
-      setMessage("Service added successfully");
-      setMessageType("success");
+      setSuccessMessage("Service added successfully.");
+      setErrorMessage(null);
     } catch (error) {
-      console.log(error);
-      setMessage("Failed to add service");
-      setMessageType("error");
+      console.log("Failed to add service.", error);
+      setErrorMessage("Failed to add service.");
     }
   };
 
@@ -72,7 +69,6 @@ function ServicesManager({ services = [], onServicesChange }) {
     if (!confirmed) return;
 
     const token = localStorage.getItem("authToken");
-    setMessage(null);
 
     try {
       await axios.delete(`${API_URL}/providers/services/${serviceId}`, {
@@ -82,20 +78,17 @@ function ServicesManager({ services = [], onServicesChange }) {
       });
 
       onServicesChange(services.filter((service) => service.id !== serviceId));
-
-      setMessage("Service deleted successfully");
-      setMessageType("success");
+      setErrorMessage(null);
+      setSuccessMessage("Service deleted successfully.");
     } catch (error) {
       console.log(error);
-      setMessage("Failed to delete service");
-      setMessageType("error");
+      setErrorMessage("Failed to delete service.");
     }
   };
 
   //update service
   const handleUpdateService = async (serviceId) => {
     const token = localStorage.getItem("authToken");
-    setMessage(null);
 
     try {
       const { data } = await axios.put(
@@ -118,25 +111,14 @@ function ServicesManager({ services = [], onServicesChange }) {
 
       onServicesChange(updatedServices);
       setEditingServiceId(null);
-      setMessage("Service updated successfully");
-      setMessageType("success");
+      setSuccessMessage("Service updated successfully.");
+      setErrorMessage(null);
     } catch (error) {
       console.log(error);
-      setMessage("Failed to update service");
-      setMessageType("error");
+      setErrorMessage("Failed to update service.");
     }
   };
 
-  useEffect(() => {
-    if (!message) return;
-
-    const timer = setTimeout(() => {
-      setMessage(null);
-      setMessageType(null);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [message]);
   return (
     <section className="services-manager">
       <ul className="services-list">
@@ -229,44 +211,58 @@ function ServicesManager({ services = [], onServicesChange }) {
 
       <section className="form-container">
         <form onSubmit={handleAddService} className="service-form">
-          <input
-            type="text"
-            placeholder="Service name"
-            value={newService.name}
-            onChange={(e) =>
-              setNewService({ ...newService, name: e.target.value })
-            }
-            required
-          />
+          <div className="service-form-inputs">
+            <input
+              type="text"
+              placeholder="Service name"
+              value={newService.name}
+              onChange={(e) =>
+                setNewService({ ...newService, name: e.target.value })
+              }
+              required
+            />
 
-          <input
-            type="number"
-            placeholder="Price"
-            value={newService.price}
-            onChange={(e) =>
-              setNewService({ ...newService, price: e.target.value })
-            }
-            required
-          />
+            <input
+              type="number"
+              placeholder="Price"
+              value={newService.price}
+              onChange={(e) =>
+                setNewService({ ...newService, price: e.target.value })
+              }
+              required
+            />
 
-          <input
-            type="number"
-            placeholder="Duration (minutes)"
-            value={newService.durationMinutes}
-            onChange={(e) =>
-              setNewService({
-                ...newService,
-                durationMinutes: e.target.value,
-              })
-            }
-            required
-          />
-
-          <button type="submit">Add Service</button>
+            <input
+              type="number"
+              placeholder="Duration (minutes)"
+              value={newService.durationMinutes}
+              onChange={(e) =>
+                setNewService({
+                  ...newService,
+                  durationMinutes: e.target.value,
+                })
+              }
+              required
+            />
+          </div>
+          <div className="service-form-actions">
+            <button type="submit">Add Service</button>
+          </div>
         </form>
       </section>
 
-      {message && <p className={`form-message ${messageType}`}>{message}</p>}
+      <Message
+        type="success"
+        text={successMessage}
+        clearMessage={setSuccessMessage}
+      />
+
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
     </section>
   );
 }

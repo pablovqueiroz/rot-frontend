@@ -4,28 +4,23 @@
   padding: 16px;
   background-color: var(--color-surface);
   height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .appointment-card h3 {
   margin-bottom: 8px;
-  font-size: 16px;
+  font-size: px;
+}
+
+.appointment-card button {
+  width: fit-content;
 }
 
 .appointment-card p {
   font-size: 14px;
   color: var(--color-text-secondary);
-}
-
-.form-error {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--color-error);
-}
-
-.form-success {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--color-success);
 }
 
 .clear-button {
@@ -44,14 +39,24 @@
   margin-top: 8px;
   font-size: 14px;
   color: var(--color-text-secondary);
-
   display: flex;
   flex-direction: column;
   gap: 2px;
+  width: 150px;
 }
 
 .appointment-contact strong {
   color: var(--color-text-primary);
+}
+
+.status-container {
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+}
+.status-container button{
+  display: flex;
+  padding: 10px;
 }
 
 .appointment-status {
@@ -84,4 +89,19 @@
 .status-cancelled {
   background-color: var(--color-error);
   color: #fff;
+}
+
+.appointmentcard-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+
+}
+.cancel-button{
+  background-color: var(--color-error);
+  align-self: end;
 }

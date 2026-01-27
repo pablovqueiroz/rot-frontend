@@ -35,7 +35,7 @@
   flex-direction: column;
 }
 
-.services-manager .form-message {
+.services-manager {
   margin-bottom: 1rem;
 }
 
@@ -94,13 +94,13 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .service-form {
   width: 100%;
   display: flex;
-    flex-wrap: wrap;
+  flex-direction: column;
   justify-content: space-around;
   margin-top: 2rem;
   padding-top: 1.5rem;
@@ -109,7 +109,7 @@
 
 .service-form input {
   height: 34px;
-  width: 25%;
+  width: 30%;
   padding: 0.45rem 0.6rem;
   font-size: 0.85rem;
   border-radius: 6px;
@@ -119,6 +119,16 @@
 .service-form input:focus {
   outline: none;
   border-color: var(--color-primary);
+}
+
+.service-form-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+.service-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 15px;
 }
 
 .service-form button {
@@ -149,7 +159,7 @@
 }
 
 .availability-card p {
- text-align: center;
+  text-align: center;
 }
 
 .availability-manager {
@@ -180,7 +190,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  min-width: 80px;
+  min-width: 115px;
   font-size: 0.9rem;
   color: var(--color-text-primary);
 }
@@ -222,4 +232,88 @@
 
 .availability-hours input:disabled {
   opacity: 0.5;
+}
+
+@media (max-width: 1024px) {
+  .my-services-page {
+    padding: 1.25rem;
+  }
+
+  .my-services-card,
+  .availability-card {
+    margin: 12px;
+  }
+
+  .service-form-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .service-form input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-form-actions {
+    justify-content: center;
+  }
+
+  .my-services-page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .my-services-card,
+  .availability-card {
+    width: 100%;
+    padding: 1.25rem;
+  }
+
+  .my-services-card {
+    order: 1;
+  }
+
+  .availability-card {
+    order: 2;
+  }
+
+  .availability-card h1 {
+    padding-top: 0;
+  }
+
+  .availability-item {
+    flex-direction: row;
+  }
+
+  .service-col.actions {
+    justify-content: flex-end;
+  }
+
+  .service-form {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .service-form input {
+    width: 100%;
+  }
+
+  .service-form button {
+    width: fit-content;
+    align-items: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-item {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .availability-item {
+    flex-direction: column;
+  }
 }

@@ -2,20 +2,18 @@ import "./HomePage.css";
 import Hero from "../../components/Dashboard/Hero";
 import ProvidersList from "../provider/ProvidersList/ProvidersList";
 import SearchHeader from "../../components/SearchHeader/SearchHeader";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../config/config";
-import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import Message from "../../components/Message/Message";
+
 
 function HomePage() {
   const [providers, setProviders] = useState([]);
   const [search, setSearch] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
-  const { currentUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(5);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   //fetch providers
   useEffect(() => {
@@ -23,8 +21,10 @@ function HomePage() {
       try {
         const response = await axios.get(`${API_URL}/providers`);
         setProviders(response.data);
+        setErrorMessage(null);
       } catch (error) {
-        console.log(error);
+        console.error("Failed to load providers:", error);
+        setErrorMessage("Failed to load providers. Please try again.");
       }
     }
 
@@ -57,6 +57,13 @@ function HomePage() {
       <Hero />
 
       <SearchHeader onSearch={setSearch} />
+
+      <Message
+        type="error"
+        text={errorMessage}
+        clearMessage={setErrorMessage}
+        duration={4000}
+      />
 
       <div className="top-pagination">
         {totalPages > 1 && (

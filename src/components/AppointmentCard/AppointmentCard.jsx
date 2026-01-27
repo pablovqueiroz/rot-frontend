@@ -2,6 +2,7 @@ import "./AppointmentCard.css";
 import { useContext, useState } from "react";
 import { API_URL } from "../../config/config";
 import { AuthContext } from "../../context/AuthContext";
+import Message from "../Message/Message";
 
 function AppointmentCard({ appointment, onChange }) {
   const STATUS_CONFIG = {
@@ -47,8 +48,6 @@ function AppointmentCard({ appointment, onChange }) {
     }
 
     try {
-      setErrorMessage(null);
-
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
@@ -69,8 +68,9 @@ function AppointmentCard({ appointment, onChange }) {
       }, 3000);
 
       setSuccessMessage("Appointment cancelled successfully.");
+      setErrorMessage(null);
     } catch (error) {
-      console.log(error);
+      console.error("Cancel appointment error:", error);
       setErrorMessage("Something went wrong. Please try again.");
     }
   }
@@ -100,66 +100,87 @@ function AppointmentCard({ appointment, onChange }) {
 
       onChange();
     } catch (error) {
-      console.log(error);
+      console.error("Update appointment status error:", error);
       setErrorMessage("Failed to update appointment status.");
     }
   }
 
   return (
     <div>
-      <article className="appointment-card">
+      <div className="appointment-card">
         <h3>{service.name}</h3>
 
         <p>
           {new Date(date).toLocaleDateString()} · {startTime} – {endTime}
         </p>
+        <section className="status-container">
 
         <span
           className={`appointment-status ${STATUS_CONFIG[status]?.className}`}
-        >
+          >
           {STATUS_CONFIG[status]?.label}
         </span>
-
         {currentUser.role === "provider" && status === "scheduled" && (
           <button onClick={() => updateStatus("confirmed")}>Confirm</button>
         )}
-        <div className="appointment-contact">
-          <p>
-            <strong>
-              {currentUser.role === "provider" ? "Client" : "Provider"}:
-            </strong>{" "}
-            {contact.name}
-          </p>
+        </section>
 
-          {contact.email && (
+        <div className="appointmentcard-footer">
+          <section className="appointment-contact">
             <p>
-              <strong>Email:</strong> {contact.email}
+              <strong>
+                {currentUser.role === "provider" ? "Client" : "Provider"}:
+              </strong>{" "}
+              {contact.name}
             </p>
-          )}
 
-          {contact.phone && (
-            <p>
-              <strong>Phone:</strong> {contact.phone}
-            </p>
-          )}
+            {contact.email && (
+              <p>
+                <strong>Email:</strong> {contact.email}
+              </p>
+            )}
+
+            {contact.phone && (
+              <p>
+                <strong>Phone:</strong> {contact.phone}
+              </p>
+            )}
+          </section>
+
+          <section className="buttons">
+            {currentUser.role === "provider" && status === "confirmed" && (
+              <button onClick={() => updateStatus("completed")}>
+                Completed
+              </button>
+            )}
+
+            {status !== "cancelled" && status !== "completed" && (
+              <button onClick={handleCancel} className="cancel-button">Cancel</button>
+            )}
+
+            {["completed", "cancelled"].includes(status) && (
+              <button
+                onClick={() => setIsHidden(true)}
+                className="clear-button"
+              >
+                Hide
+              </button>
+            )}
+            <Message
+              type="success"
+              text={successMessage}
+              clearMessage={setSuccessMessage}
+            />
+
+            <Message
+              type="error"
+              text={errorMessage}
+              clearMessage={setErrorMessage}
+              duration={4000}
+            />
+          </section>
         </div>
-
-        {currentUser.role === "provider" && status === "confirmed" && (
-          <button onClick={() => updateStatus("completed")}>Completed</button>
-        )}
-
-        {status !== "cancelled" && status !== "completed" && (
-          <button onClick={handleCancel}>Cancel</button>
-        )}
-
-        {successMessage && <p className="form-success">{successMessage}</p>}
-        {errorMessage && <p className="form-error">{errorMessage}</p>}
-        {["completed", "cancelled"].includes(status) && (
-          <button onClick={() => setIsHidden(true)} className="clear-button">
-            Hide
-          </button>
-        )}
-      </article>
+      </div>
     </div>
   );
 }
