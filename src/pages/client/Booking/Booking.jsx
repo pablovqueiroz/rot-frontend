@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
 import Message from "../../../components/Message/Message";
+import Spinner from "../../../components/spinner/Spinner";
 
 function Booking() {
   const location = useLocation();
@@ -46,7 +47,7 @@ function Booking() {
   }, [bookingData, navigate]);
 
   if (isLoading) {
-    return <main className="booking-page">Loading booking information...</main>;
+    return <Spinner fullscreen text="Loading booking information..." />;
   }
 
   if (!bookingData) {

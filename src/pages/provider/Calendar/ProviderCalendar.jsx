@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useCalendarEvents from "../../../hooks/useCalendarEvents";
 import { getAppointments } from "../../../Services/appointmentService";
 import Message from "../../../components/Message/Message";
+import Spinner from "../../../components/spinner/Spinner";
 
 // Calendar event styles (react-big-calendar)
 const STATUS_COLORS = {
@@ -73,7 +74,7 @@ function ProviderCalendar() {
   const events = useCalendarEvents(appointments);
 
   if (loading) {
-    return <p>Loading calendar...</p>;
+    return <Spinner fullscreen text="Loading calendar..."/>;
   }
 
   return (

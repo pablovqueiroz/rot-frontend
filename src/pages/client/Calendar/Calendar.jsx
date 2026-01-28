@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
 import Message from "../../../components/Message/Message";
+import Spinner from "../../../components/spinner/Spinner";
 
 function Calendar() {
   const location = useLocation();
@@ -48,13 +49,11 @@ function Calendar() {
 
   //calculate slots (to unblock slots)
   useEffect(() => {
-  if (!bookingData?.providerId || !bookingData?.date) return;
+    if (!bookingData?.providerId || !bookingData?.date) return;
 
-  async function fetchBlockedAppointments() {
-    try {
-      const { data } = await axios.get(
-        `${API_URL}/appointments/blocked`,
-        {
+    async function fetchBlockedAppointments() {
+      try {
+        const { data } = await axios.get(`${API_URL}/appointments/blocked`, {
           params: {
             providerId: bookingData.providerId,
             date: bookingData.date,
@@ -62,19 +61,17 @@ function Calendar() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
-        }
-      );
+        });
 
-      setAppointments(data);
-    } catch (err) {
-      console.log("Failed to reload blocked appointments", err);
-      setAppointments([]);
+        setAppointments(data);
+      } catch (err) {
+        console.log("Failed to reload blocked appointments", err);
+        setAppointments([]);
+      }
     }
-  }
 
-  fetchBlockedAppointments();
-}, [bookingData?.providerId, bookingData?.date]);
-
+    fetchBlockedAppointments();
+  }, [bookingData?.providerId, bookingData?.date]);
 
   //get slots availables
   useEffect(() => {
@@ -210,7 +207,7 @@ function Calendar() {
   }
 
   if (isLoading) {
-    return <main className="calendar-page">Loading calendar...</main>;
+    return <Spinner fullscreen text="Loading calendar..." />;
   }
 
   return (

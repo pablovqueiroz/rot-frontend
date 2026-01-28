@@ -1,5 +1,6 @@
 .profile-page {
   min-height: 80vh;
+  padding: 1.25rem;
 }
 
 .profile-card {
@@ -172,6 +173,12 @@
   word-break: break-all;
 }
 
+.avatar-upload-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .avatar-confirm-button:disabled,
 .avatar-uploader button:disabled {
   opacity: 0.6;
@@ -228,4 +235,58 @@
 
 .danger-button:hover {
   opacity: 0.9;
+}
+
+
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 16px;
+  }
+
+  .first-block {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .avatar-uploader {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .avatar-uploader img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .profile-form form {
+    width: 100%;
+  }
+  .profile-security {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .profile-security-form {
+    max-width: 100%;
+  }
+
+  .danger-zone {
+    width: 100%;
+    min-width: unset;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-form button,
+  .change-password-button button,
+  .danger-button {
+    width: fit-content;
+    margin: auto;
+  }
+
+  .change-password-button,
+  .delete-account-button {
+    justify-content: stretch;
+  }
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../../../config/config";
 import axios from "axios";
 import Message from "../../../components/Message/Message";
+import Spinner from "../../../components/spinner/Spinner";
 
 function ProviderDetails() {
   const { id } = useParams();
@@ -28,7 +29,7 @@ function ProviderDetails() {
   }, [id]);
 
   if (isLoading) {
-    return <p>Loading provider...</p>;
+    return <Spinner fullscreen text="Loading provider..."/>;
   }
 
   const { name, image, bio, services = [], phone, email } = provider;

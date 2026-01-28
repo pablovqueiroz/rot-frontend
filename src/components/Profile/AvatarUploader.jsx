@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { API_URL } from "../../config/config";
 import Message from "../Message/Message";
+import Spinner from "../spinner/Spinner";
 
 function AvatarUploader({ imageUrl, role, onImageUpdated }) {
   const { authenticateUser } = useContext(AuthContext);
@@ -85,14 +86,21 @@ function AvatarUploader({ imageUrl, role, onImageUpdated }) {
         <p className="avatar-file-info">Selected file: {selectedFile.name}</p>
       )}
 
-      <button
-        className="avatar-upload-button"
-        type="button"
-        onClick={handleUpload}
-        disabled={!selectedFile || isUploading}
-      >
-        {isUploading ? "Uploading..." : "Upload image"}
-      </button>
+      <div className="avatar-upload-actions">
+        <button
+          className="avatar-upload-button"
+          type="button"
+          onClick={handleUpload}
+          disabled={!selectedFile || isUploading}
+        >
+          Upload image
+        </button>
+
+        {isUploading && (
+          <Spinner size={16} text="Uploading..." color="var(--color-primary)" />
+        )}
+      </div>
+
       <Message
         type="success"
         text={successMessage}

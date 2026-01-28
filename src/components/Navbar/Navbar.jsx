@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { ThemeContext } from "../../context/ThemeContext";
 import { API_URL } from "../../config/config";
 import axios from "axios";
+import Spinner from "../spinner/Spinner";
 
 function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -13,9 +14,9 @@ function Navbar() {
 
   const [displayName, setDisplayName] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
-  
+
   //class to change menu to clicked in mobile screens
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // find user/provider
   useEffect(() => {
@@ -48,7 +49,9 @@ function Navbar() {
     fetchProfile();
   }, [currentUser]);
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return <Spinner fullscreen />;
+  }
 
   const profilePath =
     currentUser?.role === "provider" ? "/provider/profile" : "/user/profile";
@@ -102,47 +105,46 @@ function Navbar() {
                 alt="profile"
               />
             </button>
-            
+
             {/* menu dropdown*/}
-              <div className={`nav-dropdown ${menuOpen ? "open" : ""}`}>
-                <p className="nav-dropdown-hello">Hello {displayName}</p>
+            <div className={`nav-dropdown ${menuOpen ? "open" : ""}`}>
+              <p className="nav-dropdown-hello">Hello {displayName}</p>
 
-                <NavLink to={profilePath} onClick={() => setMenuOpen(false)}>
-                  My Profile
-                </NavLink>
+              <NavLink to={profilePath} onClick={() => setMenuOpen(false)}>
+                My Profile
+              </NavLink>
 
-                {currentUser?.role === "provider" && (
-                  <>
-                    <NavLink
-                      to="/provider/services"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      My Services
-                    </NavLink>
+              {currentUser?.role === "provider" && (
+                <>
+                  <NavLink
+                    to="/provider/services"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    My Services
+                  </NavLink>
 
-                    <NavLink
-                      to="/my-appointments"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      My Appointments
-                    </NavLink>
-                  </>
-                )}
-
-                {currentUser?.role === "user" && (
                   <NavLink
                     to="/my-appointments"
                     onClick={() => setMenuOpen(false)}
                   >
                     My Appointments
                   </NavLink>
-                )}
+                </>
+              )}
 
-                <button className="nav-logout" onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            
+              {currentUser?.role === "user" && (
+                <NavLink
+                  to="/my-appointments"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  My Appointments
+                </NavLink>
+              )}
+
+              <button className="nav-logout" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
           </div>
         )}
       </section>

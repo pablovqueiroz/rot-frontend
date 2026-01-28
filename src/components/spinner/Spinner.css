@@ -1,0 +1,29 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  margin: auto;
+}
+
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--overlay-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.spinner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.spinner-text {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}

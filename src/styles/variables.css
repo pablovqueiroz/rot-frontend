@@ -22,6 +22,7 @@
     var(--color-primary),
     var(--color-success)
   );
+    --overlay-background: rgba(249, 250, 251, 0.6);
 }
 
 
@@ -43,4 +44,6 @@
     --calendar-booked: #3b82f6;
     --calendar-blocked: #334155;
     --calendar-hover: #1e40af;
+
+    --overlay-background: rgba(15, 23, 42, 0.6);
   }
