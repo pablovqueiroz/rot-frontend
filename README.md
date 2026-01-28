@@ -1,4 +1,20 @@
-# ROT - Right On Time Frontend
+## 🧩 Project Ecosystem
+
+- ⚙️ **Backend** → https://github.com/pablovqueiroz/rot-backend
+- 🌐 **Frontend** → https://github.com/pablovqueiroz/rot-frontend
+
+<h1 align="center">ROT — RIGHT ON TIME  </h1>
+<p align="center">
+  <img src="src/assets/images/logo-rot.png" width="200" alt="Project Logo">
+</p>
+ 
+<p align="center">
+    Appointment Scheduling Platform — Frontend Web App
+</p>
+
+<p align="center" style="font-size: 20px;">
+  🌍 <a href="https://right-on-time.netlify.app/">Live Demo</a>
+</p>
 
 ## Project Description
 
@@ -100,37 +116,37 @@ rot-right-on-time-frontend/
 
 ### Public Routes
 
-| Route | Component | Description |
-|-------|-----------|-------------|
-| `/` | HomePage | Landing page with provider listing and search |
-| `/login` | Login | User/provider login page |
-| `/register` | Register | New user/provider registration |
-| `/about` | AboutPage | Information about the platform |
-| `/providers/:id` | ProviderDetails | Detailed provider information and services |
+| Route            | Component       | Description                                   |
+| ---------------- | --------------- | --------------------------------------------- |
+| `/`              | HomePage        | Landing page with provider listing and search |
+| `/login`         | Login           | User/provider login page                      |
+| `/register`      | Register        | New user/provider registration                |
+| `/about`         | AboutPage       | Information about the platform                |
+| `/providers/:id` | ProviderDetails | Detailed provider information and services    |
 
 ### Client (User) Routes
 
-| Route | Component | Description | Access |
-|-------|-----------|-------------|--------|
-| `/user/profile` | UserProfilePage | Client profile management | Authenticated |
-| `/booking` | Booking | Appointment booking flow | Authenticated |
-| `/calendar` | Calendar | Client appointment calendar | Authenticated |
-| `/my-appointments` | Appointments | View and manage scheduled appointments | Authenticated |
+| Route              | Component       | Description                            | Access        |
+| ------------------ | --------------- | -------------------------------------- | ------------- |
+| `/user/profile`    | UserProfilePage | Client profile management              | Authenticated |
+| `/booking`         | Booking         | Appointment booking flow               | Authenticated |
+| `/calendar`        | Calendar        | Client appointment calendar            | Authenticated |
+| `/my-appointments` | Appointments    | View and manage scheduled appointments | Authenticated |
 
 ### Provider Routes
 
-| Route | Component | Description | Access |
-|-------|-----------|-------------|--------|
-| `/provider/profile` | ProviderProfilePage | Provider profile and settings | Authenticated (Provider) |
-| `/provider/calendar` | ProviderCalendar | Provider schedule management | Authenticated (Provider) |
-| `/provider/services` | MyServices | Create and manage services | Authenticated (Provider) |
-| `/provider/:id` | ProviderDetails | Provider profile (public view) | Public |
+| Route                | Component           | Description                    | Access                   |
+| -------------------- | ------------------- | ------------------------------ | ------------------------ |
+| `/provider/profile`  | ProviderProfilePage | Provider profile and settings  | Authenticated (Provider) |
+| `/provider/calendar` | ProviderCalendar    | Provider schedule management   | Authenticated (Provider) |
+| `/provider/services` | MyServices          | Create and manage services     | Authenticated (Provider) |
+| `/provider/:id`      | ProviderDetails     | Provider profile (public view) | Public                   |
 
 ### Error Handling
 
-| Route | Component | Description |
-|-------|-----------|-------------|
-| `*` | NotFound | 404 page not found |
+| Route | Component | Description        |
+| ----- | --------- | ------------------ |
+| `*`   | NotFound  | 404 page not found |
 
 ## Frontend Architecture
 
@@ -176,12 +192,14 @@ Components/Pages → API Service (Axios) → Backend API
 ### Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/yourusername/rot-right-on-time-frontend.git
 cd rot-right-on-time-frontend
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
@@ -189,6 +207,7 @@ npm install
 3. **Configure environment variables**
 
 Create a `.env.local` file in the project root:
+
 ```
 VITE_API_URL=http://localhost:5005/api
 ```
@@ -227,8 +246,6 @@ Check code quality and styling:
 npm run lint
 ```
 
-
-
 Authentication context is managed by `AuthContext`, wrapping the app to provide global auth state.
 
 ## Key Features
@@ -248,6 +265,7 @@ The application communicates with a backend API for operations like authenticati
 ### API Base URL Configuration
 
 Set the backend API URL in your environment:
+
 ```
 VITE_API_URL=http://localhost:5005/api
 ```
@@ -287,8 +305,6 @@ The frontend communicates with the backend API for:
 - Signup routes never receive files directly.
 - All API calls include JWT authentication headers when required.
 
-
-
 ## Support & Academic Disclaimer
 
 This project was developed exclusively for **academic and educational purposes** as part of the Ironhack Full-Stack Web Development Bootcamp.
@@ -300,3 +316,12 @@ It is **not intended for** commercial use, production deployment, or real-world 
 **Last Updated**: January 28, 2026  
 **Version**: 1.0.0  
 **Status**: Complete ✅
+
+## 🧩 Project Ecosystem
+
+- ⚙️ **Backend** → https://github.com/pablovqueiroz/rot-backend
+- 🌐 **Frontend** → https://github.com/pablovqueiroz/rot-frontend
+
+<p style="font-size: 20px;">
+  🌍 <a href="https://right-on-time.netlify.app/">Live Demo</a>
+</p>

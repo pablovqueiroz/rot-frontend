@@ -52,6 +52,7 @@
   text-align: center;
   font-size: 12px;
   color: var(--color-text-secondary);
+   text-transform: uppercase;
 }
 
 .service-filter select {

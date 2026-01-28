@@ -27,12 +27,12 @@
   flex: 1;
 }
 
-
 .provider-services {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   font-weight: 600;
+  text-transform: uppercase;
 }
 
 .provider-service {
@@ -43,11 +43,11 @@
   color: var(--color-text-primary);
 }
 
-.card-profile-info{
+.card-profile-info {
   display: flex;
 }
 
-.card-profile-info-content{
+.card-profile-info-content {
   width: 100%;
   padding-left: 10px;
   display: flex;
@@ -69,17 +69,17 @@
 .provider-footer {
   margin-top: auto;
   display: flex;
-  justify-content:flex-end;
+  justify-content: flex-end;
   align-items: center;
 }
 
 @media (max-width: 480px) {
-.provider-card {
+  .provider-card {
     width: 350px;
     border-radius: 3px;
     background-color: var(--color-surface);
     box-shadow: 0 0 4px 0 var(--color-border);
     display: flex;
     flex-direction: column;
-}
+  }
 }

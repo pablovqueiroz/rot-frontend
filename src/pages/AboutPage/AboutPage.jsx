@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import "./AboutPage.css";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function AboutPage() {
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <main className="about-page">
       <section className="about-container">
@@ -30,7 +33,7 @@ function AboutPage() {
 
           <ul className="about-services">
             <li>Mechanic</li>
-            <li>Babysitters</li> 
+            <li>Babysitters</li>
             <li>Pet Sitters</li>
             <li>Hairdresser & Barber</li>
             <li>Makeup artist</li>
@@ -60,18 +63,21 @@ function AboutPage() {
           </p>
         </section>
 
-        <section className="about-cta">
-          <h2>Ready to get started?</h2>
-          <p>
-            Join Right On Time today and start booking or offering services.
-          </p>
+        {!isLoggedIn && (
+          <section className="about-cta">
+            <h2>Ready to get started?</h2>
+            <p>
+              Join Right On Time today and start booking or offering services.
+            </p>
 
-          <div>
-            <Link to="/register">
-              <button>Create an account</button>
-            </Link>
-          </div>
-        </section>
+            <div>
+              <Link to="/register">
+                <button>Create an account</button>
+              </Link>
+            </div>
+          </section>
+        )}
+        
       </section>
     </main>
   );
