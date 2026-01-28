@@ -17,6 +17,7 @@ function UserProfilePage() {
   const { isLoading, authenticateUser, handleLogout } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",

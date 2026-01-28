@@ -17,6 +17,7 @@ function ProviderProfilePage() {
   const { isLoading, authenticateUser, handleLogout } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -117,7 +118,7 @@ function ProviderProfilePage() {
   };
 
   if (isLoading) {
-    return <Spinner fullscreen text="Loading profile..."/>;
+    return <Spinner fullscreen text="Loading profile..." />;
   }
 
   //update password
@@ -125,7 +126,9 @@ function ProviderProfilePage() {
     e.preventDefault();
 
     const token = localStorage.getItem("authToken");
-
+    setIsChangingPassword(true);
+    setSuccessMessage(null);
+    setErrorMessage(null);
     try {
       const { data } = await axios.put(
         `${API_URL}/api/auth/change-password`,
@@ -145,10 +148,12 @@ function ProviderProfilePage() {
       setSuccessMessage(data.message);
       setErrorMessage(null);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setErrorMessage(
         error.response?.data?.message || "Failed to change password.",
       );
+    } finally {
+      setIsChangingPassword(false);
     }
   };
 
@@ -270,7 +275,16 @@ function ProviderProfilePage() {
                   duration={4000}
                 />
 
-                <button type="submit">Change password</button>
+                <button type="submit" disabled={isChangingPassword}>
+                  Change password
+                </button>
+                {isChangingPassword && (
+                  <Spinner
+                    size={16}
+                    text="Changing..."
+                    color="var(--color-primary)"
+                  />
+                )}
               </section>
             </form>
 
