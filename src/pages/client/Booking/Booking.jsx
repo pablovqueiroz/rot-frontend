@@ -59,6 +59,16 @@ function Booking() {
 
   const today = new Date().toISOString().split("T")[0];
 
+  //disable dates unavailables
+  function isDateAvailable(dateString, availability) {
+    if (!availability) return false;
+
+    const date = new Date(`${dateString}T12:00:00`);
+    const dayOfWeek = date.getDay();
+
+    return availability.some((slot) => slot.dayOfWeek === dayOfWeek);
+  }
+
   return (
     <main className="booking-page">
       <h1 className="booking-title">Book service</h1>
@@ -87,7 +97,20 @@ function Booking() {
           type="date"
           min={today}
           value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            if (!isDateAvailable(value, provider.availability)) {
+              setErrorMessage(
+                "This provider does not work on the selected day.",
+              );
+              setSelectedDate("");
+              return;
+            }
+
+            setErrorMessage(null);
+            setSelectedDate(value);
+          }}
         />
       </section>
 

@@ -31,7 +31,7 @@ function HomePage() {
     fetchProviders();
   }, []);
 
-  //get services name by alphabet order to use filter
+  //get services name by alphabetic order to use filter
   const availableServices = [
     "all",
     ...Array.from(
