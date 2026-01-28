@@ -92,3 +92,9 @@
 .login-footer a:hover {
     text-decoration: underline;
 }
+
+.login-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

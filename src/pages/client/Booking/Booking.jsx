@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
 import Message from "../../../components/Message/Message";
-import Spinner from "../../../components/spinner/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 
 function Booking() {
   const location = useLocation();

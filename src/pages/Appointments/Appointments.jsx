@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Message from "../../components/Message/Message";
-import Spinner from "../../components/spinner/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);

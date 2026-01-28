@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config/config";
 import axios from "axios";
 import Message from "../../../components/Message/Message";
+import Spinner from "../../../components/Spinner/Spinner";
 
 function Register() {
   const [name, setName] = useState("");
@@ -117,9 +118,13 @@ function Register() {
             duration={4000}
           />
 
-          <button className="register-button" disabled={isSubmitting}>
-            {isSubmitting ? "Creating account..." : "Sign up"}
-          </button>
+          <div className="register-actions">
+            <button className="register-button" disabled={isSubmitting}>
+              {isSubmitting ? "Creating account..." : "Sign up"}
+            </button>
+
+            {isSubmitting && <Spinner size={20} text="" />}
+          </div>
 
           <p className="register-footer">
             Already a member? <Link to="/login">Login</Link>

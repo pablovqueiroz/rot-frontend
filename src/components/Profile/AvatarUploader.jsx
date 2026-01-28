@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { API_URL } from "../../config/config";
 import Message from "../Message/Message";
-import Spinner from "../spinner/Spinner";
+import Spinner from "../Spinner/Spinner";
 
 function AvatarUploader({ imageUrl, role, onImageUpdated }) {
   const { authenticateUser } = useContext(AuthContext);

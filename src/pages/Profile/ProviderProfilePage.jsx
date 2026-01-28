@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
 import Message from "../../components/Message/Message";
-import Spinner from "../../components/spinner/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 
 const defaultImg =
   "https://res.cloudinary.com/dacvtyyst/image/upload/v1769168326/bwcwiefeph34flwiwohy.jpg";

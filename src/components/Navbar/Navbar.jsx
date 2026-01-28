@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { ThemeContext } from "../../context/ThemeContext";
 import { API_URL } from "../../config/config";
 import axios from "axios";
-import Spinner from "../spinner/Spinner";
+import Spinner from "../Spinner/Spinner";
 
 function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);

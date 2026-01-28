@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import useCalendarEvents from "../../../hooks/useCalendarEvents";
 import { getAppointments } from "../../../Services/appointmentService";
 import Message from "../../../components/Message/Message";
-import Spinner from "../../../components/spinner/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 
 // Calendar event styles (react-big-calendar)
 const STATUS_COLORS = {
