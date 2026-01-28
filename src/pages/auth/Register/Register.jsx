@@ -32,8 +32,8 @@ function Register() {
 
     const endpoint =
       role === "provider"
-        ? `${API_URL}/auth/signup/provider`
-        : `${API_URL}/auth/signup/user`;
+        ? `${API_URL}/api/auth/signup/provider`
+        : `${API_URL}/api/auth/signup/user`;
 
     try {
       await axios.post(endpoint, formData);

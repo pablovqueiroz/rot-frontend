@@ -32,7 +32,7 @@ function Booking() {
 
     async function fetchProvider() {
       try {
-        const { data } = await axios.get(`${API_URL}/providers/${providerId}`);
+        const { data } = await axios.get(`${API_URL}/api/providers/${providerId}`);
         setProvider(data);
         setErrorMessage(null);
       } catch (err) {

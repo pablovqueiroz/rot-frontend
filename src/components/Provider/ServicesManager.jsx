@@ -31,7 +31,7 @@ function ServicesManager({ services = [], onServicesChange }) {
     const token = localStorage.getItem("authToken");
     try {
       const { data } = await axios.post(
-        `${API_URL}/providers/services`,
+        `${API_URL}/api/providers/services`,
         {
           name: newService.name,
           price: Number(newService.price),
@@ -71,7 +71,7 @@ function ServicesManager({ services = [], onServicesChange }) {
     const token = localStorage.getItem("authToken");
 
     try {
-      await axios.delete(`${API_URL}/providers/services/${serviceId}`, {
+      await axios.delete(`${API_URL}/api/providers/services/${serviceId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,7 +92,7 @@ function ServicesManager({ services = [], onServicesChange }) {
 
     try {
       const { data } = await axios.put(
-        `${API_URL}/providers/services/${serviceId}`,
+        `${API_URL}/api/providers/services/${serviceId}`,
         {
           name: editedService.name,
           price: Number(editedService.price),

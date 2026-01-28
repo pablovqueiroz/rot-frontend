@@ -16,7 +16,7 @@ function ProviderDetails() {
   useEffect(() => {
     async function fetchProvider() {
       try {
-        const response = await axios.get(`${API_URL}/providers/${id}`);
+        const response = await axios.get(`${API_URL}/api/providers/${id}`);
         setProvider(response.data);
       } catch (error) {
         console.log("Provider not found.", error);

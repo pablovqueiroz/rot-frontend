@@ -30,7 +30,7 @@ function Calendar() {
       try {
         const { providerId } = bookingData;
 
-        const { data } = await axios.get(`${API_URL}/providers/${providerId}`);
+        const { data } = await axios.get(`${API_URL}/api/providers/${providerId}`);
 
         setProvider(data);
       } catch (error) {
@@ -53,7 +53,7 @@ function Calendar() {
 
     async function fetchBlockedAppointments() {
       try {
-        const { data } = await axios.get(`${API_URL}/appointments/blocked`, {
+        const { data } = await axios.get(`${API_URL}/api/appointments/blocked`, {
           params: {
             providerId: bookingData.providerId,
             date: bookingData.date,
@@ -160,7 +160,7 @@ function Calendar() {
       setIsSubmitting(true);
 
       await axios.post(
-        `${API_URL}/appointments`,
+        `${API_URL}/api/appointments`,
         {
           provider: providerId,
           service,

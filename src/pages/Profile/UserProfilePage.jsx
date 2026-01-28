@@ -37,7 +37,7 @@ function UserProfilePage() {
       try {
         const token = localStorage.getItem("authToken");
 
-        const { data } = await axios.get(`${API_URL}/users/me`, {
+        const { data } = await axios.get(`${API_URL}/api/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -63,7 +63,7 @@ function UserProfilePage() {
 
     try {
       await axios.put(
-        `${API_URL}/users/me`,
+        `${API_URL}/api/users/me`,
         { name, phone },
         {
           headers: {
@@ -98,7 +98,7 @@ function UserProfilePage() {
     const token = localStorage.getItem("authToken");
 
     try {
-      await axios.delete(`${API_URL}/users/me`, {
+      await axios.delete(`${API_URL}/api/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -122,7 +122,7 @@ function UserProfilePage() {
 
     try {
       const { data } = await axios.put(
-        `${API_URL}/auth/change-password`,
+        `${API_URL}/api/auth/change-password`,
         passwordForm,
         {
           headers: {

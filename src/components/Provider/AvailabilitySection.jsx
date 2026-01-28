@@ -42,7 +42,7 @@ function AvailabilitySection() {
       const token = localStorage.getItem("authToken");
 
       try {
-        const { data } = await axios.get(`${API_URL}/providers/me`, {
+        const { data } = await axios.get(`${API_URL}/api/providers/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -79,7 +79,7 @@ function AvailabilitySection() {
     const token = localStorage.getItem("authToken");
     try {
       await axios.put(
-        `${API_URL}/providers/me`,
+        `${API_URL}/api/providers/me`,
         { availability: availabilityForBackend },
         {
           headers: { Authorization: `Bearer ${token}` },

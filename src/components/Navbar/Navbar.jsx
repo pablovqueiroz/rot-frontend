@@ -28,8 +28,8 @@ function Navbar() {
       try {
         const endpoint =
           currentUser.role === "provider"
-            ? `${API_URL}/providers/me`
-            : `${API_URL}/users/me`;
+            ? `${API_URL}/api/providers/me`
+            : `${API_URL}/api/users/me`;
 
         const { data } = await axios.get(endpoint, {
           headers: {

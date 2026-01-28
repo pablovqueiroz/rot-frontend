@@ -54,7 +54,7 @@ function AppointmentCard({ appointment, onChange }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `${API_URL}/appointments/${appointment._id}/cancel`,
+        `${API_URL}/api/appointments/${appointment._id}/cancel`,
         {
           method: "PATCH",
           headers: {
@@ -86,7 +86,7 @@ function AppointmentCard({ appointment, onChange }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `${API_URL}/appointments/${appointment._id}/status`,
+        `${API_URL}/api/appointments/${appointment._id}/status`,
         {
           method: "PATCH",
           headers: {

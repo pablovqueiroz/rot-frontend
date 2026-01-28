@@ -21,7 +21,7 @@ const AuthWrapper = ({ children }) => {
       return;
     }
     try {
-      const { data } = await axios.get(`${API_URL}/auth/verify`, {
+      const { data } = await axios.get(`${API_URL}/api/auth/verify`, {
         headers: {
           Authorization: `Bearer ${tokenInStorage}`,
         },

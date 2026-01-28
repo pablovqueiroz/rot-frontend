@@ -40,7 +40,7 @@ function ProviderProfilePage() {
       try {
         const token = localStorage.getItem("authToken");
 
-        const { data } = await axios.get(`${API_URL}/providers/me`, {
+        const { data } = await axios.get(`${API_URL}/api/providers/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -67,7 +67,7 @@ function ProviderProfilePage() {
     const token = localStorage.getItem("authToken");
     try {
       await axios.put(
-        `${API_URL}/providers/me`,
+        `${API_URL}/api/providers/me`,
         { name, phone, bio },
         {
           headers: {
@@ -103,7 +103,7 @@ function ProviderProfilePage() {
     const token = localStorage.getItem("authToken");
 
     try {
-      await axios.delete(`${API_URL}/providers/me`, {
+      await axios.delete(`${API_URL}/api/providers/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -128,7 +128,7 @@ function ProviderProfilePage() {
 
     try {
       const { data } = await axios.put(
-        `${API_URL}/auth/change-password`,
+        `${API_URL}/api/auth/change-password`,
         passwordForm,
         {
           headers: {

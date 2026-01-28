@@ -30,7 +30,7 @@ function AvatarUploader({ imageUrl, role, onImageUpdated }) {
 
     try {
       const token = localStorage.getItem("authToken");
-      const uploadRes = await axios.post(`${API_URL}/upload/image`, formData, {
+      const uploadRes = await axios.post(`${API_URL}/api/upload/image`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -39,8 +39,8 @@ function AvatarUploader({ imageUrl, role, onImageUpdated }) {
 
       const endpoint =
         role === "provider"
-          ? `${API_URL}/providers/image`
-          : `${API_URL}/users/image`;
+          ? `${API_URL}/api/providers/image`
+          : `${API_URL}/api/users/image`;
 
       await axios.put(
         endpoint,
