@@ -7,13 +7,13 @@ import axios from "axios";
 import { API_URL } from "../../config/config";
 import Message from "../../components/Message/Message";
 
-
 function HomePage() {
   const [providers, setProviders] = useState([]);
   const [search, setSearch] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [selectedService, setSelectedService] = useState("all");
 
   //fetch providers
   useEffect(() => {
@@ -31,8 +31,20 @@ function HomePage() {
     fetchProviders();
   }, []);
 
+  //get services name by alphabet order to use filter
+  const availableServices = [
+    "all",
+    ...Array.from(
+      new Set(
+        providers.flatMap((provider) =>
+          provider.services.map((service) => service.name),
+        ),
+      ),
+    ).sort((a, b) => a.localeCompare(b)),
+  ];
+
   //searchbar
-  const filteredProviders = providers.filter(
+  const searchFilteredProviders = providers.filter(
     (provider) =>
       provider.name.toLowerCase().includes(search.toLowerCase()) ||
       provider.services.some((service) =>
@@ -40,23 +52,55 @@ function HomePage() {
       ),
   );
 
+  //service filter
+  const serviceFilteredProviders = searchFilteredProviders.filter(
+    (provider) => {
+      if (selectedService === "all") return true;
+
+      return provider.services.some(
+        (service) => service.name === selectedService,
+      );
+    },
+  );
+
   //pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const totalPages = Math.ceil(filteredProviders.length / itemsPerPage);
+  const totalPages = Math.ceil(serviceFilteredProviders.length / itemsPerPage);
 
-  const providersToShow = filteredProviders.slice(startIndex, endIndex);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search]);
+  const providersToShow = serviceFilteredProviders.slice(startIndex, endIndex);
 
   return (
     <div className="home-content">
       <Hero />
+      <section className="filter-section">
+        <SearchHeader
+          onSearch={(value) => {
+            setSearch(value);
+            setCurrentPage(1);
+          }}
+        />
 
-      <SearchHeader onSearch={setSearch} />
+        <div className="service-filter">
+          <label htmlFor="service-select">Filter by service</label>
+
+          <select
+            id="service-select"
+            value={selectedService}
+            onChange={(e) => {
+              setSelectedService(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            {availableServices.map((service) => (
+              <option key={service} value={service}>
+                {service}
+              </option>
+            ))}
+          </select>
+        </div>
+      </section>
 
       <Message
         type="error"

@@ -80,6 +80,14 @@ function UserProfilePage() {
     }
   };
 
+    //update image
+  const handleImageUpdated = (newImage) => {
+    setProfile((prev) => ({
+      ...prev,
+      image: newImage,
+    }));
+  };
+
   //delete user acount
   const handleDeleteAccount = async () => {
     const confirmed = window.confirm(
@@ -144,7 +152,11 @@ function UserProfilePage() {
 
         <div className="profile-form">
           <section className="first-block">
-            <AvatarUploader imageUrl={image?.url || defaultImg} role="user" />
+            <AvatarUploader
+              imageUrl={image?.url || defaultImg}
+              role="user"
+              onImageUpdated={handleImageUpdated}
+            />
             <ProfileForm onSubmit={handleUpdateProfile}>
               <label>
                 Email

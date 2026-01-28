@@ -41,7 +41,7 @@ function Login() {
   return (
     <div className="login-wrapper">
       <section className="login-card">
-        <h3 className="login-title">Welcome!</h3>
+        <h1 className="login-title">Welcome!</h1>
 
         <form className="login-form" onSubmit={handleLogin}>
           <article className="login-field">

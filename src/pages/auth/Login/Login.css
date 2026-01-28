@@ -20,7 +20,8 @@
 }
 
 .login-title {
-  font-size: 1.5em;
+  font-size: 2em;
+  margin: 0;
   color: var(--color-text-primary);
   text-align: center;
   text-decoration: underline;
@@ -47,7 +48,6 @@
   padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  background-color: var(--color-surface);
   font-size: 14px;
 }
 

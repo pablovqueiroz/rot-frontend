@@ -50,7 +50,7 @@ function Register() {
   return (
     <div className="register-wrapper">
       <div className="register-card">
-        <h3 className="register-title">Create your account</h3>
+        <h1 className="register-title">Get started!</h1>
 
         <form className="register-form" onSubmit={handleRegister}>
           <section className="role-selector">

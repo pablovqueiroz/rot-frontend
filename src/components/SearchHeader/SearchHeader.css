@@ -1,14 +1,16 @@
 .search-header {
   width: 80%;
-  margin: 15px auto;
+  margin: 15px 0;
+  height: fit-content;
   display: flex;
   justify-content: center;
 }
 
 .search-bar {
   width: 100%;
+  min-width: 220px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 14px;

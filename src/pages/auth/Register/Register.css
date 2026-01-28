@@ -20,7 +20,8 @@
 }
 
 .register-title {
-  font-size: 1.5em;
+  font-size: 2em;
+  margin: 0;
   color: var(--color-text-primary);
   text-align: center;
   text-decoration: underline;
@@ -39,12 +40,14 @@
 
 .role-selector button {
   flex: 1;
-  padding: 10px 12px;
-  border-radius: 8px;
+  margin: 0;
+  background-color: var(--color-background);
   border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+  border-radius: 8px;
+  padding: 10px 12px;
   font-size: 14px;
   font-weight: 600;
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -52,16 +55,15 @@
     color 0.2s ease;
 }
 
-.role-selector button:hover {
+.role-selector button:hover:not(.active) {
   border-color: var(--color-primary);
   color: var(--color-text-primary);
 }
 
 .role-selector button.active {
+  background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: var(--color-surface);
-  font-weight: 600;
-  scale: 1.1;
 }
 
 .register-field {
@@ -79,7 +81,6 @@
   padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  background-color: var(--color-surface);
   font-size: 14px;
 }
 
