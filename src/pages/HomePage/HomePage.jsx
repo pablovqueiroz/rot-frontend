@@ -19,7 +19,7 @@ function HomePage() {
   useEffect(() => {
     async function fetchProviders() {
       try {
-        const response = await axios.get(`${API_URL}/providers`);
+        const response = await axios.get(`${API_URL}/api/providers`);
         setProviders(response.data);
         setErrorMessage(null);
       } catch (error) {
