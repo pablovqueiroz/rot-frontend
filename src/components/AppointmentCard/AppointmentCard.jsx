@@ -30,12 +30,15 @@ function AppointmentCard({ appointment, onChange }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const { currentUser } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(null);
-  const [isHidden, setIsHidden] = useState(false);
   const contact = currentUser.role === "provider" ? client : provider;
 
-  if (isHidden) {
-    return null;
-  }
+  const [statusFilters, setStatusFilters] = useState({
+    scheduled: true,
+    confirmed: true,
+    completed: false,
+    cancelled: false,
+    no_show: false,
+  });
 
   //to cancel appointment
   async function handleCancel() {
@@ -105,6 +108,8 @@ function AppointmentCard({ appointment, onChange }) {
     }
   }
 
+  //filter appointments
+
   return (
     <div>
       <div className="appointment-card">
@@ -114,15 +119,14 @@ function AppointmentCard({ appointment, onChange }) {
           {new Date(date).toLocaleDateString()} · {startTime} – {endTime}
         </p>
         <section className="status-container">
-
-        <span
-          className={`appointment-status ${STATUS_CONFIG[status]?.className}`}
+          <span
+            className={`appointment-status ${STATUS_CONFIG[status]?.className}`}
           >
-          {STATUS_CONFIG[status]?.label}
-        </span>
-        {currentUser.role === "provider" && status === "scheduled" && (
-          <button onClick={() => updateStatus("confirmed")}>Confirm</button>
-        )}
+            {STATUS_CONFIG[status]?.label}
+          </span>
+          {currentUser.role === "provider" && status === "scheduled" && (
+            <button onClick={() => updateStatus("confirmed")}>Confirm</button>
+          )}
         </section>
 
         <div className="appointmentcard-footer">
@@ -155,17 +159,11 @@ function AppointmentCard({ appointment, onChange }) {
             )}
 
             {status !== "cancelled" && status !== "completed" && (
-              <button onClick={handleCancel} className="cancel-button">Cancel</button>
-            )}
-
-            {["completed", "cancelled"].includes(status) && (
-              <button
-                onClick={() => setIsHidden(true)}
-                className="clear-button"
-              >
-                Hide
+              <button onClick={handleCancel} className="cancel-button">
+                Cancel
               </button>
             )}
+
             <Message
               type="success"
               text={successMessage}

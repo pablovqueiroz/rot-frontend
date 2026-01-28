@@ -3,7 +3,7 @@
   border-radius: 8px;
   padding: 16px;
   background-color: var(--color-surface);
-  height: 250px;
+  min-height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -51,10 +51,10 @@
 
 .status-container {
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
 }
-.status-container button{
+.status-container button {
   display: flex;
   padding: 10px;
 }
@@ -99,9 +99,16 @@
 .buttons {
   display: flex;
   flex-direction: column;
-
 }
-.cancel-button{
+.cancel-button {
   background-color: var(--color-error);
   align-self: end;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .appointment-status {
+    font-size: 11px;
+  }
 }

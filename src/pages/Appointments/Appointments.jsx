@@ -14,7 +14,38 @@ function Appointments() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [statusFilters, setStatusFilters] = useState({
+    scheduled: true,
+    confirmed: true,
+    completed: false,
+    cancelled: false,
+  });
 
+  //sort by status
+  const STATUS_PRIORITY = {
+    scheduled: 1,
+    confirmed: 2,
+    completed: 3,
+    cancelled: 4,
+  };
+
+  //sort by date/status
+  function compareAppointments(a, b) {
+    const statusDiff = STATUS_PRIORITY[a.status] - STATUS_PRIORITY[b.status];
+
+    if (statusDiff !== 0) {
+      return statusDiff;
+    }
+
+    const dateDiff = new Date(a.date) - new Date(b.date);
+
+    if (dateDiff !== 0) {
+      return dateDiff;
+    }
+    return a.startTime.localeCompare(b.startTime);
+  }
+
+  //fetch appointments
   async function fetchAppointments(isRefresh = false) {
     try {
       if (isRefresh) {
@@ -33,6 +64,7 @@ function Appointments() {
     }
   }
 
+  //sync appointments
   useEffect(() => {
     const interval = setInterval(() => {
       fetchAppointments();
@@ -44,6 +76,20 @@ function Appointments() {
   if (isInitialLoading) {
     return <Spinner fullscreen />;
   }
+
+  //filter appointments
+  const filteredAppointments = appointments.filter((appointment) => {
+    if (appointment.status === "no_show") {
+      return false;
+    }
+
+    return statusFilters[appointment.status];
+  });
+
+  //sort by order
+  const sortedAppointments = [...filteredAppointments].sort(
+    compareAppointments,
+  );
 
   return (
     <section className="appointments-page">
@@ -66,8 +112,25 @@ function Appointments() {
 
       {appointments.length === 0 && <p>No appointments found.</p>}
 
+      <div className="appointments-filters">
+        {Object.keys(statusFilters).map((status) => (
+          <button
+            key={status}
+            className={`filter-button ${statusFilters[status] ? "active" : ""}`}
+            onClick={() =>
+              setStatusFilters((prev) => ({
+                ...prev,
+                [status]: !prev[status],
+              }))
+            }
+          >
+            {status.replace("_", " ")}
+          </button>
+        ))}
+      </div>
+
       <section className="appointments-list">
-        {appointments.map((appointment) => (
+        {sortedAppointments.map((appointment) => (
           <AppointmentCard
             key={appointment._id}
             appointment={appointment}
