@@ -12,6 +12,7 @@ function ProviderDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const nav = useNavigate();
+  const [openDescription, setOpenDescription] = useState(null);
 
   useEffect(() => {
     async function fetchProvider() {
@@ -29,7 +30,7 @@ function ProviderDetails() {
   }, [id]);
 
   if (isLoading) {
-    return <Spinner fullscreen text="Loading provider..."/>;
+    return <Spinner fullscreen text="Loading provider..." />;
   }
 
   const { name, image, bio, services = [], phone, email } = provider;
@@ -51,6 +52,15 @@ function ProviderDetails() {
         },
       },
     });
+  }
+
+  //to summarize desccription
+  function getDescriptionPreview(text, limit = 0) {
+    if (!text) return "";
+
+    if (text.length <= limit) return text;
+
+    return text.slice(0, limit).trim() + "";
   }
 
   return (
@@ -95,26 +105,67 @@ function ProviderDetails() {
 
         <ul className="services-list-details">
           {services.map((service) => (
-            <li key={service.id || `${service.name}-${service.price}`} className="service-card">
-              <h3>{service.name}</h3>
-              <p>
-                <strong>Price: </strong> €{service.price}
-              </p>
-              <p>
-                <strong>Duration: </strong> {service.durationMinutes} min
-              </p>
+            <li
+              key={service.id || `${service.name}-${service.price}`}
+              className="service-card"
+            >
+              <h4 className="service-title">{service.name}</h4>
+              <div className="service-card-info">
+                {service.description && (
+                  <>
+                    <span>{getDescriptionPreview(service.description)}</span>
 
-              <button
-                disabled={!hasAvailability}
-                onClick={() => handleBookService(service)}
-              >
-                Book service
-              </button>
+                    {service.description.length > 120 && (
+                      <span
+                        className="read-more"
+                        onClick={() => setOpenDescription(service.description)}
+                      >
+                        {" "}
+                        See description...
+                      </span>
+                    )}
+                  </>
+                )}
+                <p>
+                  <strong>Price: </strong> €{service.price}
+                </p>
+                <p>
+                  <strong>Duration: </strong> {service.durationMinutes} min
+                </p>
+              </div>
+              <div className="service-card-button">
+                <button
+                  disabled={!hasAvailability}
+                  onClick={() => handleBookService(service)}
+                >
+                  Book service
+                </button>
+              </div>
 
               {!hasAvailability && (
                 <p className="form-hint">
                   Sorry, there are no available times at the moment.
                 </p>
+              )}
+              {/* modal dscription */}
+              {openDescription && (
+                <div
+                  className="modal-overlay"
+                  onClick={() => setOpenDescription(null)}
+                >
+                  <div
+                    className="modal-content"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <h3>{service.name} | Service description</h3>
+
+                    <p>{openDescription}</p>
+
+                    <button onClick={() => setOpenDescription(null)}>
+                      Close
+                    </button>
+                  </div>
+                </div>
               )}
             </li>
           ))}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../config/config";
 import Message from "../Message/Message";
@@ -6,9 +6,11 @@ import Message from "../Message/Message";
 function ServicesManager({ services = [], onServicesChange }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [openDescription, setOpenDescription] = useState(null);
 
   const [newService, setNewService] = useState({
     name: "",
+    description: "",
     price: "",
     durationMinutes: "",
   });
@@ -17,12 +19,22 @@ function ServicesManager({ services = [], onServicesChange }) {
 
   const [editedService, setEditedService] = useState({
     name: "",
+    description: "",
     price: "",
     durationMinutes: "",
   });
 
   if (!onServicesChange) {
     throw new Error("ServicesManager requires onServicesChange prop");
+  }
+
+  //to summarize desccription
+  function getDescriptionPreview(text, limit = 50) {
+    if (!text) return "";
+
+    if (text.length <= limit) return text;
+
+    return text.slice(0, limit).trim() + "…";
   }
 
   // ADD service
@@ -34,6 +46,7 @@ function ServicesManager({ services = [], onServicesChange }) {
         `${API_URL}/api/providers/services`,
         {
           name: newService.name,
+          description: newService.description,
           price: Number(newService.price),
           durationMinutes: Number(newService.durationMinutes),
         },
@@ -48,6 +61,7 @@ function ServicesManager({ services = [], onServicesChange }) {
 
       setNewService({
         name: "",
+        description: "",
         price: "",
         durationMinutes: "",
       });
@@ -95,6 +109,7 @@ function ServicesManager({ services = [], onServicesChange }) {
         `${API_URL}/api/providers/services/${serviceId}`,
         {
           name: editedService.name,
+          description: editedService.description,
           price: Number(editedService.price),
           durationMinutes: Number(editedService.durationMinutes),
         },
@@ -168,6 +183,33 @@ function ServicesManager({ services = [], onServicesChange }) {
                     }
                   />
                 </div>
+                <div className="service-col description">
+                  <textarea
+                    value={editedService.description || ""}
+                    placeholder="Contact the provider for more information."
+                    maxLength={300}
+                    rows={1}
+                    onFocus={(e) => {
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
+                    }}
+                    onChange={(e) => {
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
+
+                      setEditedService({
+                        ...editedService,
+                        description: e.target.value,
+                      });
+                    }}
+                    onBlur={(e) => {
+                      if (!e.target.value) {
+                        e.target.style.height = "34px";
+                      }
+                    }}
+                    required
+                  />
+                </div>
 
                 <div className="service-col actions">
                   <button onClick={() => handleUpdateService(service.id)}>
@@ -181,10 +223,32 @@ function ServicesManager({ services = [], onServicesChange }) {
             ) : (
               <>
                 <div className="service-col name">{service.name}</div>
-                <div className="service-col duration">
-                  {service.durationMinutes} min
+                <div className="service-col description">
+                  {service.description && (
+                    <>
+                      <span>{getDescriptionPreview(service.description)}</span>
+
+                      {service.description.length > 120 && (
+                        <span
+                          className="read-more"
+                          onClick={() =>
+                            setOpenDescription(service.description)
+                          }
+                        >
+                          {" "}
+                          read more
+                        </span>
+                      )}
+                    </>
+                  )}
                 </div>
-                <div className="service-col price">€{service.price}</div>
+
+                <div className="service-col duration">
+                  <strong>Duration:</strong> {service.durationMinutes}min
+                </div>
+                <div className="service-col price">
+                  <strong>Price:</strong> €{service.price}
+                </div>
 
                 <div className="service-col actions">
                   <button
@@ -192,6 +256,7 @@ function ServicesManager({ services = [], onServicesChange }) {
                       setEditingServiceId(service.id);
                       setEditedService({
                         name: service.name,
+                        description: service.description ?? "",
                         price: service.price,
                         durationMinutes: service.durationMinutes,
                       });
@@ -219,6 +284,32 @@ function ServicesManager({ services = [], onServicesChange }) {
               onChange={(e) =>
                 setNewService({ ...newService, name: e.target.value })
               }
+              required
+            />
+
+            <textarea
+              value={newService.description}
+              placeholder="Service description"
+              maxLength={300}
+              rows={1}
+              onFocus={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+              onChange={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+
+                setNewService({
+                  ...newService,
+                  description: e.target.value,
+                });
+              }}
+              onBlur={(e) => {
+                if (!e.target.value) {
+                  e.target.style.height = "34px";
+                }
+              }}
               required
             />
 
@@ -250,6 +341,18 @@ function ServicesManager({ services = [], onServicesChange }) {
           </div>
         </form>
       </section>
+      {/* modal dscription */}
+      {openDescription && (
+        <div className="modal-overlay" onClick={() => setOpenDescription(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Service description</h3>
+
+            <p>{openDescription}</p>
+
+            <button onClick={() => setOpenDescription(null)}>Close</button>
+          </div>
+        </div>
+      )}
 
       <Message
         type="success"

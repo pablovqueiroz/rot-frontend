@@ -47,17 +47,19 @@
 
 .service-item {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.9rem 1.2rem;
+  grid-template-columns: 1fr auto auto auto;
+  grid-template-areas:
+    "name duration price actions"
+    "description description description description";
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .service-col {
-  min-width: 0;
+
   font-size: 0.9rem;
   color: var(--color-text-primary);
 }
@@ -68,26 +70,160 @@
 }
 
 .service-col.actions button {
-  margin: 0;
-  padding: 0.45rem 0.9rem;
+  padding: 0.4rem 0.9rem;
   font-size: 0.8rem;
+  border-radius: 6px;
+}
+
+.service-col.name {
+  grid-area: name;
+  font-weight: 600;
+  margin: auto 0;
+  min-width: 180px;
+  text-transform: uppercase;
+}
+
+.service-col.duration {
+  grid-area: duration;
+  white-space: nowrap;
+  margin: auto 0;
+}
+
+.service-col.price {
+  grid-area: price;
+  white-space: nowrap;
+  margin: auto 0;
+}
+
+.service-col.actions {
+  grid-area: actions;
+  display: flex;
+  gap: 0.5rem;
+  margin: auto 0;
+}
+
+.service-col.description {
+  grid-area: description;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.read-more {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* modal description */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--color-surface);
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.modal-content p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.modal-content button {
+  float: right;
+  margin-bottom: 0;
 }
 
 /* edit mode */
 
-.service-col input {
+.service-col input,
+.service-col textarea {
   width: 100%;
-  height: 32px;
-  padding: 0.4rem 0.6rem;
+  padding: 0.45rem 0.6rem;
   font-size: 0.85rem;
   border-radius: 6px;
   border: 1px solid var(--color-border);
+  font-family: inherit;
 }
+
 
 .service-col input:focus {
   outline: none;
   border-color: var(--color-primary);
 }
+
+.service-col.description {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.service-col.description:empty::before {
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.service-item.is-editing {
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "name name"
+    "description description"
+    "duration price"
+    "actions actions";
+}
+
+.service-item.is-editing input,
+.service-item.is-editing textarea {
+  background-color: var(--color-surface);
+}
+
+.service-item.is-editing textarea {
+  height: 34px;
+  resize: none;
+  overflow: hidden;
+}
+
+
+.service-item.is-editing .service-col.actions {
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.service-item.is-editing .service-col.actions button:first-child {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.service-item.is-editing .service-col.actions button:last-child {
+  background: none;
+  color: var(--color-text-secondary);
+}
+
 
 /* add service */
 .form-container {
@@ -109,32 +245,40 @@
 
 .service-form input {
   height: 34px;
-  width: 30%;
-  padding: 0.45rem 0.6rem;
-  font-size: 0.85rem;
-  border-radius: 6px;
   border: 1px solid var(--color-border);
 }
 
-.service-form input:focus {
-  outline: none;
-  border-color: var(--color-primary);
+.service-form input,
+.service-form textarea {
+  width: 100%;
+  padding: 0.3rem 0 0 0.3rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  font-family: inherit;
+}
+
+.service-form textarea {
+  height: 34px;
+  resize: none;
+  overflow: hidden;
 }
 
 .service-form-inputs {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 1fr;
+  align-items: start;
+  gap: 1rem;
 }
+
 .service-form-actions {
   display: flex;
   justify-content: flex-end;
-  padding-top: 15px;
+  margin-top: 1rem;
 }
 
 .service-form button {
-  margin: 0;
-  padding: 0.45rem 1rem;
-  background-color: var(--color-success);
+  padding: 0.55rem 1.2rem;
   font-size: 0.85rem;
 }
 
@@ -238,17 +382,26 @@
   .my-services-page {
     padding: 1.25rem;
   }
-
+  
   .my-services-card,
   .availability-card {
     margin: 12px;
   }
-
+  .service-item {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "name"
+    "description"
+    "duration" 
+    "price"
+    "actions";
+  }
+  
+  .service-col.actions {
+    justify-content: flex-end;
+  }
   .service-form-inputs {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 15px;
+    grid-template-columns: 1fr;
   }
 
   .service-form input {
@@ -288,9 +441,6 @@
     flex-direction: row;
   }
 
-  .service-col.actions {
-    justify-content: flex-end;
-  }
 
   .service-form {
     flex-direction: column;
@@ -305,15 +455,27 @@
     width: fit-content;
     align-items: flex-end;
   }
+    .service-item.is-editing {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "name"
+      "description"
+      "duration"
+      "price"
+      "actions";
+  }
+
+  .service-item.is-editing .service-col.actions {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
-  .service-item {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
 
   .availability-item {
     flex-direction: column;
+  }
+    .service-item.is-editing textarea {
+    font-size: 0.8rem;
   }
 }

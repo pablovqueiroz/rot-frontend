@@ -32,7 +32,9 @@ function Booking() {
 
     async function fetchProvider() {
       try {
-        const { data } = await axios.get(`${API_URL}/api/providers/${providerId}`);
+        const { data } = await axios.get(
+          `${API_URL}/api/providers/${providerId}`,
+        );
         setProvider(data);
         setErrorMessage(null);
       } catch (err) {
@@ -69,66 +71,85 @@ function Booking() {
     return availability.some((slot) => slot.dayOfWeek === dayOfWeek);
   }
 
+  //back to providers/id
+  function handleGoBack() {
+    if (providerId) {
+      navigate(`/providers/${providerId}`);
+    } else {
+      navigate(-1);
+    }
+  }
+
   return (
     <main className="booking-page">
-      <h1 className="booking-title">Book service</h1>
-      <Message
-        type="error"
-        text={errorMessage}
-        clearMessage={setErrorMessage}
-        duration={4000}
-      />
 
-      <section className="booking-service-card">
-        <h2>{service.name}</h2>
-        <p>
-          <strong>Price:</strong> €{service.price}
-        </p>
-        <p>
-          <strong>Duration:</strong> {service.durationMinutes} min
-        </p>
-      </section>
+        <header className="booking-header">
+          <h1 className="booking-title">Book service</h1>
 
-      <section className="booking-date-section">
-        <label htmlFor="booking-date">Choose a date</label>
+        </header>
 
-        <input
-          id="booking-date"
-          type="date"
-          min={today}
-          value={selectedDate}
-          onChange={(e) => {
-            const value = e.target.value;
-
-            if (!isDateAvailable(value, provider.availability)) {
-              setErrorMessage(
-                "This provider does not work on the selected day.",
-              );
-              setSelectedDate("");
-              return;
-            }
-
-            setErrorMessage(null);
-            setSelectedDate(value);
-          }}
+        <Message
+          type="error"
+          text={errorMessage}
+          clearMessage={setErrorMessage}
+          duration={4000}
         />
-      </section>
 
-      <button
-        className="booking-continue-button"
-        disabled={!selectedDate}
-        onClick={() =>
-          navigate("/calendar", {
-            state: {
-              providerId,
-              service,
-              date: selectedDate,
-            },
-          })
-        }
-      >
-        Continue
-      </button>
+        <section className="booking-service-card">
+          <h2>{service.name}</h2>
+          <p>{service.description}</p>
+          <p>
+            <strong>Price:</strong> €{service.price}
+          </p>
+          <p>
+            <strong>Duration:</strong> {service.durationMinutes} min
+          </p>
+        </section>
+
+        <section className="booking-date-section">
+          <label htmlFor="booking-date">Choose a date</label>
+
+          <input
+            id="booking-date"
+            type="date"
+            min={today}
+            value={selectedDate}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (!isDateAvailable(value, provider.availability)) {
+                setErrorMessage(
+                  "This provider does not work on the selected day.",
+                );
+                setSelectedDate("");
+                return;
+              }
+
+              setErrorMessage(null);
+              setSelectedDate(value);
+            }}
+          />
+        </section>
+
+        <button
+          className="booking-continue-button"
+          disabled={!selectedDate}
+          onClick={() =>
+            navigate("/calendar", {
+              state: {
+                providerId,
+                service,
+                date: selectedDate,
+              },
+            })
+          }
+        >
+          Continue
+        </button>
+            <button className="booking-back-link" onClick={handleGoBack}>
+              ← Back
+            </button>
+
     </main>
   );
 }
