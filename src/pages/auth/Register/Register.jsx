@@ -11,6 +11,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("user");
   const [image, setImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,16 +22,28 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !image) {
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
+    if (!name || !email || !password || !confirmPassword || !image) {
       setErrorMessage("Please fill in all fields and select an image.");
       return;
     }
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
+    formData.append("confirmPassword", confirmPassword);
     formData.append("image", image);
 
     const endpoint =
@@ -53,6 +66,12 @@ function Register() {
       setIsSubmitting(false);
     }
   };
+
+  const isPasswordValid =
+    password &&
+    confirmPassword &&
+    password === confirmPassword &&
+    password.length >= 6;
 
   return (
     <div className="register-wrapper">
@@ -108,6 +127,21 @@ function Register() {
           </section>
 
           <section className="register-field">
+            <label>Confirm password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Repeat your password..."
+            />
+            {confirmPassword && password !== confirmPassword && (
+              <small className="password-form-hint">
+                Passwords do not match
+              </small>
+            )}
+          </section>
+
+          <section className="register-field">
             <label>Profile picture</label>
             <input
               type="file"
@@ -129,6 +163,7 @@ function Register() {
               className={
                 isSubmitting ? "register-button hidden" : "register-button"
               }
+              disabled={!isPasswordValid}
             >
               {isSubmitting ? "Creating account..." : "Sign up"}
             </button>
