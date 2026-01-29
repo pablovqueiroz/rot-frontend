@@ -125,6 +125,11 @@
   text-align: left;
 }
 
+.profile-form .hidden {
+  display: none;
+}
+
+
 /* avatar uploader */
 
 .avatar-uploader {

@@ -53,8 +53,8 @@ function Navbar() {
     return <Spinner fullscreen />;
   }
 
-  const profilePath =
-    currentUser?.role === "provider" ? "/provider/profile" : "/user/profile";
+  const profilePath = "/profile";
+
 
   return (
     <nav className="nav-container">

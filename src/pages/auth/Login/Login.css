@@ -78,6 +78,10 @@
   background-color: #1e40af;
 }
 
+.login-button.hidden{
+  display: none;
+}
+
 .login-footer {
   font-size: 14px;
   color: var(--color-text-secondary);

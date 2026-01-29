@@ -4,8 +4,8 @@ import ProfileForm from "../../components/Profile/ProfileForm";
 import axios from "axios";
 import { API_URL } from "../../config/config";
 import DangerZone from "../../components/Profile/DangerZone";
-import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
 import Message from "../../components/Message/Message";
 import Spinner from "../../components/Spinner/Spinner";
@@ -13,8 +13,11 @@ import Spinner from "../../components/Spinner/Spinner";
 const defaultImg =
   "https://res.cloudinary.com/dacvtyyst/image/upload/v1769168326/bwcwiefeph34flwiwohy.jpg";
 
-function ProviderProfilePage() {
-  const { isLoading, authenticateUser, handleLogout } = useContext(AuthContext);
+function ProfilePage() {
+    
+  const { isLoading, authenticateUser, handleLogout, currentUser } =
+    useContext(AuthContext);
+
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -27,21 +30,26 @@ function ProviderProfilePage() {
 
   const [profile, setProfile] = useState({
     name: "",
-    email: "",
     phone: "",
-    bio: "",
+    email: "",
     image: null,
-    services: [],
   });
 
-  const { name, email, phone, bio, image } = profile;
+  const { name, phone, email, image } = profile;
+
+  const role = currentUser?.role;
+  const isProvider = role === "provider";
 
   useEffect(() => {
-    const fetchProviderProfile = async () => {
+    if (!role) return;
+
+    const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("authToken");
 
-        const { data } = await axios.get(`${API_URL}/api/providers/me`, {
+        const endpoint = isProvider ? "/api/providers/me" : "/api/users/me";
+
+        const { data } = await axios.get(`${API_URL}${endpoint}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,32 +61,35 @@ function ProviderProfilePage() {
           phone: data.phone || "",
           bio: data.bio || "",
           image: data.image || null,
-          services: data.services || [],
         });
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchProviderProfile();
-  }, []);
+    fetchProfile();
+  }, [role, isProvider]);
 
-  //update provider account
+  //update user account
   const handleUpdateProfile = async () => {
     const token = localStorage.getItem("authToken");
+
+    const endpoint = isProvider ? "/api/providers/me" : "/api/users/me";
+
+    const payload = isProvider
+      ? { name, phone, bio: profile.bio }
+      : { name, phone };
+
     try {
-      await axios.put(
-        `${API_URL}/api/providers/me`,
-        { name, phone, bio },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      await axios.put(`${API_URL}${endpoint}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       await authenticateUser();
       setSuccessMessage("Profile updated successfully.");
+      setErrorMessage(null);
     } catch (error) {
       console.log(error);
       setErrorMessage("Failed to update profile.");
@@ -93,18 +104,19 @@ function ProviderProfilePage() {
     }));
   };
 
-  //delete provider account
+  //delete user acount
   const handleDeleteAccount = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete your account? This action cannot be undone.",
     );
-
     if (!confirmed) return;
 
     const token = localStorage.getItem("authToken");
 
+    const endpoint = isProvider ? "/api/providers/me" : "/api/users/me";
+
     try {
-      await axios.delete(`${API_URL}/api/providers/me`, {
+      await axios.delete(`${API_URL}${endpoint}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,13 +125,9 @@ function ProviderProfilePage() {
       handleLogout();
     } catch (error) {
       console.log(error);
-      setErrorMessage("Failed to delete account.");
+      alert("Failed to delete account.");
     }
   };
-
-  if (isLoading) {
-    return <Spinner fullscreen text="Loading profile..." />;
-  }
 
   //to match password changing
   function isPasswordFormValid(form) {
@@ -136,7 +144,7 @@ function ProviderProfilePage() {
 
   const isFormValid = isPasswordFormValid(passwordForm);
 
-  //update password
+  //change password
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
@@ -144,10 +152,12 @@ function ProviderProfilePage() {
       setErrorMessage("Please fill all fields correctly.");
       return;
     }
+
     const token = localStorage.getItem("authToken");
     setIsChangingPassword(true);
     setSuccessMessage(null);
     setErrorMessage(null);
+
     try {
       const { data } = await axios.put(
         `${API_URL}/api/auth/change-password`,
@@ -159,22 +169,25 @@ function ProviderProfilePage() {
         },
       );
 
+      setSuccessMessage(data.message);
+      setErrorMessage(null);
+
       setPasswordForm({
         currentPassword: "",
         newPassword: "",
         confirmNewPassword: "",
       });
-      setSuccessMessage(data.message);
-      setErrorMessage(null);
     } catch (error) {
       console.log(error);
-      setErrorMessage(
-        error.response?.data?.message || "Failed to change password.",
-      );
+      setErrorMessage("Failed to change password.");
     } finally {
       setIsChangingPassword(false);
     }
   };
+
+  if (isLoading) {
+    return <Spinner fullscreen text="Loading profile..." />;
+  }
 
   return (
     <main className="profile-page">
@@ -185,14 +198,16 @@ function ProviderProfilePage() {
           <section className="first-block">
             <AvatarUploader
               imageUrl={image?.url || defaultImg}
-              role="provider"
+              role={role}
               onImageUpdated={handleImageUpdated}
             />
+
             <ProfileForm onSubmit={handleUpdateProfile}>
               <label>
                 Email
                 <input type="email" value={email} disabled />
               </label>
+
               <label>
                 Name
                 <input
@@ -214,18 +229,19 @@ function ProviderProfilePage() {
                   }
                 />
               </label>
-
-              <label>
-                Bio
-                <textarea
-                  rows="4"
-                  value={bio}
-                  maxLength={500}
-                  onChange={(e) =>
-                    setProfile({ ...profile, bio: e.target.value })
-                  }
-                />
-              </label>
+              {isProvider && (
+                <label>
+                  Bio
+                  <textarea
+                    rows="4"
+                    maxLength={500}
+                    value={profile.bio}
+                    onChange={(e) =>
+                      setProfile({ ...profile, bio: e.target.value })
+                    }
+                  />
+                </label>
+              )}
             </ProfileForm>
           </section>
           <hr className="profile-divider" />
@@ -233,7 +249,6 @@ function ProviderProfilePage() {
           <section className="security-header">
             <h2>Security</h2>
           </section>
-
           <section className="profile-security">
             <form
               className="profile-security-form"
@@ -301,15 +316,6 @@ function ProviderProfilePage() {
                   clearMessage={setErrorMessage}
                   duration={4000}
                 />
-
-                <button
-                  type="submit"
-                  className={isChangingPassword ? "hidden" : ""}
-                  disabled={!isFormValid}
-                >
-                  Change password
-                </button>
-
                 {isChangingPassword && (
                   <Spinner
                     size={16}
@@ -317,9 +323,15 @@ function ProviderProfilePage() {
                     color="var(--color-primary)"
                   />
                 )}
+                <button
+                  type="submit"
+                  className={isChangingPassword ? "hidden" : ""}
+                  disabled={!isFormValid}
+                >
+                  Change password
+                </button>
               </section>
             </form>
-
             <DangerZone
               label="Delete my account"
               onDelete={handleDeleteAccount}
@@ -331,4 +343,4 @@ function ProviderProfilePage() {
   );
 }
 
-export default ProviderProfilePage;
+export default ProfilePage;

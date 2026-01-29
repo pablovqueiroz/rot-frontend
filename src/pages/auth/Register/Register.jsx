@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config/config";
 import axios from "axios";
 import Message from "../../../components/Message/Message";
 import Spinner from "../../../components/Spinner/Spinner";
+import { AuthContext } from "../../../context/AuthContext";
 
 function Register() {
   const [name, setName] = useState("");
@@ -15,6 +16,7 @@ function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const nav = useNavigate();
+  const { authenticateUser } = useContext(AuthContext);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -37,8 +39,12 @@ function Register() {
         : `${API_URL}/api/auth/signup/user`;
 
     try {
-      await axios.post(endpoint, formData);
-      nav("/login");
+      const { data } = await axios.post(endpoint, formData);
+
+      localStorage.setItem("authToken", data.authToken);
+
+      await authenticateUser();
+      nav("/profile");
       setErrorMessage(null);
     } catch (err) {
       console.log("Register error:", err);
@@ -119,7 +125,11 @@ function Register() {
           />
 
           <div className="register-actions">
-            <button className="register-button" disabled={isSubmitting}>
+            <button
+              className={
+                isSubmitting ? "register-button hidden" : "register-button"
+              }
+            >
               {isSubmitting ? "Creating account..." : "Sign up"}
             </button>
 

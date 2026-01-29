@@ -30,11 +30,15 @@ function AvatarUploader({ imageUrl, role, onImageUpdated }) {
 
     try {
       const token = localStorage.getItem("authToken");
-      const uploadRes = await axios.post(`${API_URL}/api/upload/image`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const uploadRes = await axios.post(
+        `${API_URL}/api/upload/image`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       const { url, public_id } = uploadRes.data;
 
       const endpoint =
@@ -88,7 +92,9 @@ function AvatarUploader({ imageUrl, role, onImageUpdated }) {
 
       <div className="avatar-upload-actions">
         <button
-          className="avatar-upload-button"
+          className={
+            isUploading ? "avatar-upload-button hidden" : "avatar-upload-button"
+          }
           type="button"
           onClick={handleUpload}
           disabled={!selectedFile || isUploading}

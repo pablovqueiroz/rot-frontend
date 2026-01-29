@@ -7,7 +7,6 @@ import { API_URL } from "../../../config/config";
 import Message from "../../../components/Message/Message";
 import Spinner from "../../../components/Spinner/Spinner";
 
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,13 +28,8 @@ function Login() {
 
       localStorage.setItem("authToken", data.authToken);
 
-      const userData = await authenticateUser();
-
-      if (userData.role === "provider") {
-        nav("/provider/profile");
-      } else {
-        nav("/user/profile");
-      }
+      await authenticateUser();
+      nav("/profile");
 
       setErrorMessage(null);
     } catch (err) {
@@ -81,7 +75,9 @@ function Login() {
           />
 
           <div className="login-actions">
-            <button className="login-button" disabled={isSubmitting}>
+            <button
+              className={isSubmitting ? "login-button hidden" : "login-button"}
+            >
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
 

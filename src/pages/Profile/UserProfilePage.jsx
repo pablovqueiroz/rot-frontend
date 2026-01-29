@@ -1,4 +1,4 @@
-import "./profile.css";
+import "./ProfilePage.css";
 import AvatarUploader from "../../components/Profile/AvatarUploader";
 import ProfileForm from "../../components/Profile/ProfileForm";
 import axios from "axios";
@@ -293,7 +293,8 @@ function UserProfilePage() {
                 )}
                 <button
                   type="submit"
-                  disabled={!isFormValid || isChangingPassword}
+                  className={isChangingPassword ? "hidden" : ""}
+                  disabled={!isFormValid}
                 >
                   Change password
                 </button>

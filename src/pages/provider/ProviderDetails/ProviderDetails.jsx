@@ -5,6 +5,8 @@ import { API_URL } from "../../../config/config";
 import axios from "axios";
 import Message from "../../../components/Message/Message";
 import Spinner from "../../../components/Spinner/Spinner";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 function ProviderDetails() {
   const { id } = useParams();
@@ -13,6 +15,7 @@ function ProviderDetails() {
   const [errorMessage, setErrorMessage] = useState(null);
   const nav = useNavigate();
   const [openDescription, setOpenDescription] = useState(null);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchProvider() {
@@ -42,6 +45,13 @@ function ProviderDetails() {
     provider.availability && provider.availability.length > 0;
 
   function handleBookService(service) {
+    if (currentUser?.role === "provider") {
+      setErrorMessage(
+        "To book a service, please log in with a client account.",
+      );
+      return;
+    }
+
     nav("/booking", {
       state: {
         providerId: provider._id,
@@ -63,15 +73,13 @@ function ProviderDetails() {
     return text.slice(0, limit).trim() + "";
   }
 
+  if (!currentUser) {
+    nav("/login");
+    return;
+  }
+
   return (
     <main className="provider-details">
-      <Message
-        type="error"
-        text={errorMessage}
-        clearMessage={setErrorMessage}
-        duration={4000}
-      />
-
       <section className="provider-header">
         <img src={image.url} alt={name} className="provider-avatar" />
 
@@ -133,6 +141,12 @@ function ProviderDetails() {
                   <strong>Duration: </strong> {service.durationMinutes} min
                 </p>
               </div>
+                <Message
+                  type="error"
+                  text={errorMessage}
+                  clearMessage={setErrorMessage}
+                  duration={4000}
+                />
               <div className="service-card-button">
                 <button
                   disabled={!hasAvailability}
@@ -147,6 +161,7 @@ function ProviderDetails() {
                   Sorry, there are no available times at the moment.
                 </p>
               )}
+
               {/* modal dscription */}
               {openDescription && (
                 <div
