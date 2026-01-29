@@ -14,13 +14,13 @@ const defaultImg =
   "https://res.cloudinary.com/dacvtyyst/image/upload/v1769168326/bwcwiefeph34flwiwohy.jpg";
 
 function ProfilePage() {
-    
   const { isLoading, authenticateUser, handleLogout, currentUser } =
     useContext(AuthContext);
 
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -71,14 +71,19 @@ function ProfilePage() {
   }, [role, isProvider]);
 
   //update user account
-  const handleUpdateProfile = async () => {
-    const token = localStorage.getItem("authToken");
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
 
+    const token = localStorage.getItem("authToken");
     const endpoint = isProvider ? "/api/providers/me" : "/api/users/me";
 
     const payload = isProvider
       ? { name, phone, bio: profile.bio }
       : { name, phone };
+
+    setIsUpdatingProfile(true);
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
     try {
       await axios.put(`${API_URL}${endpoint}`, payload, {
@@ -89,10 +94,11 @@ function ProfilePage() {
 
       await authenticateUser();
       setSuccessMessage("Profile updated successfully.");
-      setErrorMessage(null);
     } catch (error) {
       console.log(error);
       setErrorMessage("Failed to update profile.");
+    } finally {
+      setIsUpdatingProfile(false);
     }
   };
 
@@ -202,7 +208,25 @@ function ProfilePage() {
               onImageUpdated={handleImageUpdated}
             />
 
-            <ProfileForm onSubmit={handleUpdateProfile}>
+            <ProfileForm
+              onSubmit={handleUpdateProfile}
+              submitLabel="Save profile"
+              isLoading={isUpdatingProfile}
+              successMessage={successMessage}
+              errorMessage={errorMessage}
+            >
+              <Message
+                type="success"
+                text={successMessage}
+                clearMessage={setSuccessMessage}
+              />
+
+              <Message
+                type="error"
+                text={errorMessage}
+                clearMessage={setErrorMessage}
+                duration={4000}
+              />
               <label>
                 Email
                 <input type="email" value={email} disabled />

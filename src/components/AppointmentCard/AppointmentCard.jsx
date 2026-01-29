@@ -4,26 +4,28 @@ import { API_URL } from "../../config/config";
 import { AuthContext } from "../../context/AuthContext";
 import Message from "../Message/Message";
 
+const STATUS_CONFIG = {
+  scheduled: {
+    label: "Awaiting confirmation",
+    className: "status-scheduled",
+  },
+  confirmed: {
+    label: "Confirmed",
+    className: "status-confirmed",
+  },
+  completed: {
+    label: "Completed",
+    className: "status-completed",
+  },
+  cancelled: {
+    label: "Cancelled",
+    className: "status-cancelled",
+  },
+};
 function AppointmentCard({ appointment, onChange }) {
-  const STATUS_CONFIG = {
-    scheduled: {
-      label: "Awaiting confirmation",
-      className: "status-scheduled",
-    },
-    confirmed: {
-      label: "Confirmed",
-      className: "status-confirmed",
-    },
-    completed: {
-      label: "Completed",
-      className: "status-completed",
-    },
-    cancelled: {
-      label: "Cancelled",
-      className: "status-cancelled",
-    },
-  };
-
+  if (!appointment) {
+    return null;
+  }
   const { service, date, startTime, endTime, status, provider, client } =
     appointment;
 
@@ -31,14 +33,6 @@ function AppointmentCard({ appointment, onChange }) {
   const { currentUser } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(null);
   const contact = currentUser.role === "provider" ? client : provider;
-
-  const [statusFilters, setStatusFilters] = useState({
-    scheduled: true,
-    confirmed: true,
-    completed: false,
-    cancelled: false,
-    no_show: false,
-  });
 
   //to cancel appointment
   async function handleCancel() {
@@ -135,16 +129,16 @@ function AppointmentCard({ appointment, onChange }) {
               <strong>
                 {currentUser.role === "provider" ? "Client" : "Provider"}:
               </strong>{" "}
-              {contact.name}
+              {contact ? contact.name : "Available"}
             </p>
 
-            {contact.email && (
+            {contact?.email && (
               <p>
                 <strong>Email:</strong> {contact.email}
               </p>
             )}
 
-            {contact.phone && (
+            {contact?.phone && (
               <p>
                 <strong>Phone:</strong> {contact.phone}
               </p>

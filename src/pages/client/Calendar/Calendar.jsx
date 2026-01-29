@@ -210,6 +210,14 @@ function Calendar() {
     return <Spinner fullscreen text="Loading calendar..." />;
   }
 
+    function handleGoBack() {
+    if (providerId) {
+      nav(`/providers/${providerId}`);
+    } else {
+      nav(-1);
+    }
+  }
+
   return (
     <main className="calendar-page">
       <section className="calendar-title">
@@ -254,6 +262,9 @@ function Calendar() {
           </li>
         ))}
       </ul>
+        <button className="booking-back-link" onClick={handleGoBack}>
+              ← Back
+            </button>
     </main>
   );
 }
