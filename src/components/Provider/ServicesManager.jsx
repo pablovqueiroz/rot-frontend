@@ -146,9 +146,11 @@ function ServicesManager({ services = [], onServicesChange }) {
             {editingServiceId === service.id ? (
               <>
                 <div className="service-col name">
+                  <label>Service</label>
                   <input
                     type="text"
                     value={editedService.name}
+                    maxLength={20}
                     onChange={(e) =>
                       setEditedService({
                         ...editedService,
@@ -159,6 +161,7 @@ function ServicesManager({ services = [], onServicesChange }) {
                 </div>
 
                 <div className="service-col duration">
+                  <label>Duration</label>
                   <input
                     type="number"
                     value={editedService.durationMinutes}
@@ -172,6 +175,7 @@ function ServicesManager({ services = [], onServicesChange }) {
                 </div>
 
                 <div className="service-col price">
+                  <label>Price</label>
                   <input
                     type="number"
                     value={editedService.price}
@@ -184,6 +188,7 @@ function ServicesManager({ services = [], onServicesChange }) {
                   />
                 </div>
                 <div className="service-col description">
+                  <label>Description</label>
                   <textarea
                     value={editedService.description || ""}
                     placeholder="Contact the provider for more information."
@@ -222,8 +227,11 @@ function ServicesManager({ services = [], onServicesChange }) {
               </>
             ) : (
               <>
-                <div className="service-col name">{service.name}</div>
+                <div className="service-col name">
+                  <strong>Service: </strong> {service.name}
+                </div>
                 <div className="service-col description">
+                  <strong>Description: </strong>
                   {service.description && (
                     <>
                       <span>{getDescriptionPreview(service.description)}</span>
@@ -279,7 +287,8 @@ function ServicesManager({ services = [], onServicesChange }) {
           <div className="service-form-inputs">
             <input
               type="text"
-              placeholder="Service name"
+              placeholder="Service"
+              maxLength={20}
               value={newService.name}
               onChange={(e) =>
                 setNewService({ ...newService, name: e.target.value })

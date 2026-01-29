@@ -79,7 +79,7 @@ function Booking() {
       navigate(-1);
     }
   }
-
+  
   return (
     <main className="booking-page">
 

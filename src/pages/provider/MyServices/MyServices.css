@@ -59,23 +59,22 @@
 }
 
 .service-col {
-
   font-size: 0.9rem;
   color: var(--color-text-primary);
-}
-
-.service-col.actions {
-  display: flex;
-  gap: 0.5rem;
 }
 
 .service-col.actions button {
   padding: 0.4rem 0.9rem;
   font-size: 0.8rem;
   border-radius: 6px;
+  margin-bottom: 0;
 }
 
 .service-col.name {
+    display: flex;
+  flex-direction: column;
+}
+.service-col.name input{
   grid-area: name;
   font-weight: 600;
   margin: auto 0;
@@ -84,12 +83,16 @@
 }
 
 .service-col.duration {
+  display: flex;
+  flex-direction: column;
   grid-area: duration;
   white-space: nowrap;
   margin: auto 0;
 }
 
 .service-col.price {
+   display: flex;
+  flex-direction: column;
   grid-area: price;
   white-space: nowrap;
   margin: auto 0;
@@ -99,7 +102,6 @@
   grid-area: actions;
   display: flex;
   gap: 0.5rem;
-  margin: auto 0;
 }
 
 .service-col.description {
@@ -170,7 +172,6 @@
   font-family: inherit;
 }
 
-
 .service-col input:focus {
   outline: none;
   border-color: var(--color-primary);
@@ -207,7 +208,6 @@
   overflow: hidden;
 }
 
-
 .service-item.is-editing .service-col.actions {
   justify-content: flex-end;
   gap: 0.75rem;
@@ -223,7 +223,6 @@
   background: none;
   color: var(--color-text-secondary);
 }
-
 
 /* add service */
 .form-container {
@@ -377,12 +376,36 @@
 .availability-hours input:disabled {
   opacity: 0.5;
 }
+/* EDIT MODE – campo ativo */
+.service-item.is-editing input:focus,
+.service-item.is-editing textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.service-item.is-editing label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.2rem;
+}
+
+
+.service-item.is-editing input:focus,
+.service-item.is-editing textarea:focus {
+  background-color: #ffffff;
+}
 
 @media (max-width: 1024px) {
   .my-services-page {
     padding: 1.25rem;
   }
-  
+
   .my-services-card,
   .availability-card {
     margin: 12px;
@@ -390,13 +413,13 @@
   .service-item {
     grid-template-columns: 1fr;
     grid-template-areas:
-    "name"
-    "description"
-    "duration" 
-    "price"
-    "actions";
+      "name"
+      "description"
+      "duration"
+      "price"
+      "actions";
   }
-  
+
   .service-col.actions {
     justify-content: flex-end;
   }
@@ -441,7 +464,6 @@
     flex-direction: row;
   }
 
-
   .service-form {
     flex-direction: column;
     gap: 0.75rem;
@@ -455,7 +477,7 @@
     width: fit-content;
     align-items: flex-end;
   }
-    .service-item.is-editing {
+  .service-item.is-editing {
     grid-template-columns: 1fr;
     grid-template-areas:
       "name"
@@ -465,17 +487,23 @@
       "actions";
   }
 
+  .service-item.is-editing .service-col {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .service-item.is-editing label {
+    font-size: 0.65rem;
+  }
   .service-item.is-editing .service-col.actions {
     justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
-
   .availability-item {
     flex-direction: column;
   }
-    .service-item.is-editing textarea {
+  .service-item.is-editing textarea {
     font-size: 0.8rem;
   }
 }

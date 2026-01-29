@@ -91,3 +91,20 @@ h1 {
 .message.error {
   color: var(--color-error);
 }
+
+/* Prevent double-tap zoom */
+html {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS input zoom */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Prevent text auto-resize on iOS */
+body {
+  -webkit-text-size-adjust: 100%;
+}

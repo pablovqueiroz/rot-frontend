@@ -119,6 +119,12 @@
   gap: 12px;
 }
 
+.password-form-hint {
+  font-size: 0.7rem;
+  color: var(--color-error);
+  text-align: left;
+}
+
 /* avatar uploader */
 
 .avatar-uploader {
@@ -131,9 +137,9 @@
 }
 
 .avatar-uploader img {
-  min-width: 200px;
+  width: 200px;
   height: 200px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 50%;
   border: 1px solid var(--color-border);
 }
@@ -238,7 +244,6 @@
 .danger-button:hover {
   opacity: 0.9;
 }
-
 
 @media (max-width: 768px) {
   .profile-card {

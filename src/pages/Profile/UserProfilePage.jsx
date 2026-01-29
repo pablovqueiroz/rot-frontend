@@ -81,7 +81,7 @@ function UserProfilePage() {
     }
   };
 
-    //update image
+  //update image
   const handleImageUpdated = (newImage) => {
     setProfile((prev) => ({
       ...prev,
@@ -111,15 +111,34 @@ function UserProfilePage() {
     }
   };
 
-  if (isLoading) {
-    return <Spinner fullscreen text="Loading profile..." />;
+  //to match password changing
+  function isPasswordFormValid(form) {
+    if (!form.currentPassword) return false;
+    if (!form.newPassword) return false;
+    if (!form.confirmNewPassword) return false;
+
+    if (form.newPassword !== form.confirmNewPassword) return false;
+
+    if (form.newPassword.length < 6) return false;
+
+    return true;
   }
+
+  const isFormValid = isPasswordFormValid(passwordForm);
 
   //change password
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
+    if (!isPasswordFormValid(passwordForm)) {
+      setErrorMessage("Please fill all fields correctly.");
+      return;
+    }
+
     const token = localStorage.getItem("authToken");
+    setIsChangingPassword(true);
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
     try {
       const { data } = await axios.put(
@@ -143,8 +162,14 @@ function UserProfilePage() {
     } catch (error) {
       console.log(error);
       setErrorMessage("Failed to change password.");
+    } finally {
+      setIsChangingPassword(false);
     }
   };
+
+  if (isLoading) {
+    return <Spinner fullscreen text="Loading profile..." />;
+  }
 
   return (
     <main className="profile-page">
@@ -237,6 +262,13 @@ function UserProfilePage() {
                     })
                   }
                 />
+                {passwordForm.confirmNewPassword &&
+                  passwordForm.newPassword !==
+                    passwordForm.confirmNewPassword && (
+                    <small className="password-form-hint">
+                      Passwords do not match
+                    </small>
+                  )}
               </label>
 
               <section className="change-password-button">
@@ -252,7 +284,19 @@ function UserProfilePage() {
                   clearMessage={setErrorMessage}
                   duration={4000}
                 />
-                <button type="submit">Change password</button>
+                {isChangingPassword && (
+                  <Spinner
+                    size={16}
+                    text="Changing..."
+                    color="var(--color-primary)"
+                  />
+                )}
+                <button
+                  type="submit"
+                  disabled={!isFormValid || isChangingPassword}
+                >
+                  Change password
+                </button>
               </section>
             </form>
             <DangerZone

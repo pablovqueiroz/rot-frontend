@@ -121,10 +121,29 @@ function ProviderProfilePage() {
     return <Spinner fullscreen text="Loading profile..." />;
   }
 
+  //to match password changing
+  function isPasswordFormValid(form) {
+    if (!form.currentPassword) return false;
+    if (!form.newPassword) return false;
+    if (!form.confirmNewPassword) return false;
+
+    if (form.newPassword !== form.confirmNewPassword) return false;
+
+    if (form.newPassword.length < 6) return false;
+
+    return true;
+  }
+
+  const isFormValid = isPasswordFormValid(passwordForm);
+
   //update password
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
+    if (!isPasswordFormValid(passwordForm)) {
+      setErrorMessage("Please fill all fields correctly.");
+      return;
+    }
     const token = localStorage.getItem("authToken");
     setIsChangingPassword(true);
     setSuccessMessage(null);
@@ -201,6 +220,7 @@ function ProviderProfilePage() {
                 <textarea
                   rows="4"
                   value={bio}
+                  maxLength={500}
                   onChange={(e) =>
                     setProfile({ ...profile, bio: e.target.value })
                   }
@@ -259,6 +279,13 @@ function ProviderProfilePage() {
                     })
                   }
                 />
+                {passwordForm.confirmNewPassword &&
+                  passwordForm.newPassword !==
+                    passwordForm.confirmNewPassword && (
+                    <small className="password-form-hint">
+                      Passwords do not match
+                    </small>
+                  )}
               </label>
 
               <section className="change-password-button">
@@ -275,9 +302,13 @@ function ProviderProfilePage() {
                   duration={4000}
                 />
 
-                <button type="submit" disabled={isChangingPassword}>
+                <button
+                  type="submit"
+                  disabled={!isFormValid || isChangingPassword}
+                >
                   Change password
                 </button>
+
                 {isChangingPassword && (
                   <Spinner
                     size={16}
