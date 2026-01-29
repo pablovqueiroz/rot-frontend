@@ -13,7 +13,7 @@
 </p>
 
 <p align="center" style="font-size: 20px;">
-  🌍 <a href="https://right-on-time.netlify.app/">Live Demo</a>
+  🌍 <a href="https://rot-right-on-time.vercel.app/">Live Demo</a>
 </p>
 
 ## Project Description
@@ -323,5 +323,5 @@ It is **not intended for** commercial use, production deployment, or real-world 
 - 🌐 **Frontend** → https://github.com/pablovqueiroz/rot-frontend
 
 <p style="font-size: 20px;">
-  🌍 <a href="https://right-on-time.netlify.app/">Live Demo</a>
+  🌍 <a href="https://rot-right-on-time.vercel.app/">Live Demo</a>
 </p>
