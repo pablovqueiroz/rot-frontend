@@ -250,13 +250,14 @@ function ServicesManager({ services = [], onServicesChange }) {
                     </>
                   )}
                 </div>
-
-                <div className="service-col duration">
-                  <strong>Duration:</strong> {service.durationMinutes}min
-                </div>
-                <div className="service-col price">
-                  <strong>Price:</strong> €{service.price}
-                </div>
+                <section className="service-card-middle">
+                  <div className="service-col duration">
+                    <strong>Duration:</strong> {service.durationMinutes}min
+                  </div>
+                  <div className="service-col price">
+                    <strong>Price:</strong> €{service.price}
+                  </div>
+                </section>
 
                 <div className="service-col actions">
                   <button

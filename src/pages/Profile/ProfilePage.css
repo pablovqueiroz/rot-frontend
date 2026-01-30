@@ -150,6 +150,7 @@
 }
 
 .avatar-change-button {
+  position: relative;
   display: block;
   margin-top: 1rem;
   width: fit-content;
@@ -159,6 +160,27 @@
   cursor: pointer;
 }
 
+.avatar-change-button::after {
+  content: "Max size: 2MB";
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 4px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.avatar-change-button:hover::after {
+  opacity: 1;
+}
 .file-info {
   font-size: 0.8rem;
   color: var(--color-text-secondary);
@@ -198,6 +220,10 @@
   cursor: not-allowed;
 }
 
+small {
+  margin-top: 0;
+  padding-top: 0;
+}
 /* danger zone */
 
 .danger-container {

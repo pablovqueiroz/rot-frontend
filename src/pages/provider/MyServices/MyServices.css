@@ -71,15 +71,21 @@
 }
 
 .service-col.name {
-    display: flex;
+  display: flex;
   flex-direction: column;
 }
-.service-col.name input{
+.service-col.name input {
   grid-area: name;
   font-weight: 600;
   margin: auto 0;
   min-width: 180px;
   text-transform: uppercase;
+}
+
+.service-card-middle {
+  display: flex;
+  width: 200px;
+  justify-content: space-evenly;
 }
 
 .service-col.duration {
@@ -91,7 +97,7 @@
 }
 
 .service-col.price {
-   display: flex;
+  display: flex;
   flex-direction: column;
   grid-area: price;
   white-space: nowrap;
@@ -101,7 +107,14 @@
 .service-col.actions {
   grid-area: actions;
   display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  left: 0;
   gap: 0.5rem;
+}
+
+.service-col.actions button {
+  margin: 0;
 }
 
 .service-col.description {
@@ -395,7 +408,6 @@
   margin-bottom: 0.2rem;
 }
 
-
 .service-item.is-editing input:focus,
 .service-item.is-editing textarea:focus {
   background-color: #ffffff;
@@ -420,9 +432,6 @@
       "actions";
   }
 
-  .service-col.actions {
-    justify-content: flex-end;
-  }
   .service-form-inputs {
     grid-template-columns: 1fr;
   }
@@ -430,9 +439,19 @@
   .service-form input {
     width: 100%;
   }
+  .service-card-middle {
+    justify-content: space-between;
+  }
+  .service-col.price {
+    width: 180px;
+  }
 }
 
 @media (max-width: 768px) {
+  .service-col.price {
+    width: 100px;
+  }
+
   .service-form-actions {
     justify-content: center;
   }

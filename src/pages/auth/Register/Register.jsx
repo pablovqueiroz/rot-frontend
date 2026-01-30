@@ -142,7 +142,7 @@ function Register() {
           </section>
 
           <section className="register-field">
-            <label>Profile picture</label>
+            <label>Profile picture <small>(max 2MB)</small></label>
             <input
               type="file"
               accept="image/*"
