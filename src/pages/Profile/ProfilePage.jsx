@@ -119,10 +119,8 @@ function ProfilePage() {
 
     const token = localStorage.getItem("authToken");
 
-    const endpoint = isProvider ? "/api/providers/me" : "/api/users/me";
-
     try {
-      await axios.delete(`${API_URL}${endpoint}`, {
+      await axios.delete(`${API_URL}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
