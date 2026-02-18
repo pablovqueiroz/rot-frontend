@@ -50,68 +50,64 @@ This project was developed as an academic capstone project for Ironhack's bootca
 
 ```
 rot-right-on-time-frontend/
-├── eslint.config.js          # ESLint configuration
-├── index.html                # HTML entry point
-├── package.json              # Project dependencies
-├── README.md                 # Project documentation
-├── vite.config.js            # Vite build configuration
-├── images/                   # Static images
-├── public/                   # Public assets
-└── src/
-    ├── App.jsx               # Main application component with routes
-    ├── main.jsx              # React entry point
-    ├── assets/               # Static assets and resources
-    ├── components/           # Reusable UI components
-    │   ├── AppointmentCard/  # Appointment display component
-    │   ├── Dashboard/        # Hero section and dashboard components
-    │   ├── Footer/           # Application footer
-    │   ├── Message/          # Message/Alert component
-    │   ├── Navbar/           # Navigation header
-    │   ├── Profile/          # Profile-related components
-    │   │   ├── AvatarUploader.jsx
-    │   │   ├── DangerZone.jsx
-    │   │   ├── ProfileForm.jsx
-    │   │   └── ProfileHeader.jsx
-    │   ├── Provider/         # Provider-related components
-    │   │   ├── AvailabilitySection.jsx
-    │   │   ├── ProviderCard.jsx
-    │   │   └── ServicesManager.jsx
-    │   ├── SearchHeader/     # Search functionality component
-    │   └── spinner/          # Loading spinner component
-    ├── config/               # Configuration files
-    │   └── config.js         # API and environment configuration
-    ├── context/              # React Context for state management
-    │   ├── AuthContext.jsx   # Authentication context and logic
-    │   └── ThemeContext.jsx  # Dark/Light theme context
-    ├── hooks/                # Custom React hooks
-    │   └── useCalendarEvents.js
-    ├── pages/                # Page components (full views)
-    │   ├── AboutPage/        # About page
-    │   ├── Appointments/     # My appointments page
-    │   ├── auth/             # Authentication pages
-    │   │   ├── Login/
-    │   │   └── Register/
-    │   ├── client/           # Client-specific pages
-    │   │   ├── Booking/      # Appointment booking page
-    │   │   └── Calendar/     # Client calendar view
-    │   ├── HomePage/         # Landing page with provider listing
-    │   ├── NotFound/         # 404 page
-    │   ├── Profile/          # User and provider profiles
-    │   │   ├── UserProfilePage.jsx
-    │   │   └── ProviderProfilePage.jsx
-    │   └── provider/         # Provider-specific pages
-    │       ├── Calendar/     # Provider calendar management
-    │       ├── MyServices/   # Service management page
-    │       ├── ProviderDetails/
-    │       └── ProvidersList/
-    ├── Services/             # API service modules
-    │   └── appointmentService.js
-    └── styles/               # Global styles
-        ├── global.css        # Global styles
-        ├── reset.css         # CSS reset
-        └── variables.css     # CSS variables and theming
+|-- eslint.config.js          # ESLint configuration
+|-- index.html                # HTML entry point
+|-- package.json              # Project dependencies
+|-- README.md                 # Project documentation
+|-- vite.config.js            # Vite build configuration
+|-- public/                   # Public assets
+`-- src/
+    |-- App.jsx               # Main application component with routes
+    |-- main.jsx              # React entry point
+    |-- assets/               # Static assets and resources
+    |-- components/           # Reusable UI components
+    |   |-- AppointmentCard/  # Appointment display component
+    |   |-- Dashboard/        # Hero section and dashboard components
+    |   |-- Footer/           # Application footer
+    |   |-- Message/          # Message/Alert component
+    |   |-- Navbar/           # Navigation header
+    |   |-- Profile/          # Profile-related components
+    |   |   |-- AvatarUploader.jsx
+    |   |   |-- DangerZone.jsx
+    |   |   |-- ProfileForm.jsx
+    |   |   `-- ProfileHeader.jsx
+    |   |-- Provider/         # Provider-related components
+    |   |   |-- AvailabilitySection.jsx
+    |   |   |-- ProviderCard.jsx
+    |   |   `-- ServicesManager.jsx
+    |   |-- SearchHeader/     # Search functionality component
+    |   `-- Spinner/          # Loading spinner component
+    |-- config/               # Configuration files
+    |   `-- config.js         # API and environment configuration
+    |-- context/              # React Context for state management
+    |   |-- AuthContext.jsx   # Authentication context and logic
+    |   `-- ThemeContext.jsx  # Dark/Light theme context
+    |-- hooks/                # Custom React hooks
+    |   `-- useCalendarEvents.js
+    |-- pages/                # Page components (full views)
+    |   |-- AboutPage/        # About page
+    |   |-- Appointments/     # My appointments page
+    |   |-- auth/             # Authentication pages
+    |   |   |-- Login/
+    |   |   `-- Register/
+    |   |-- client/           # Client-specific pages
+    |   |   |-- Booking/      # Appointment booking page
+    |   |   `-- Calendar/     # Client calendar view
+    |   |-- HomePage/         # Landing page with provider listing
+    |   |-- NotFound/         # 404 page
+    |   |-- Profile/          # Unified user/provider profile page
+    |   `-- provider/         # Provider-specific pages
+    |       |-- Calendar/     # Provider calendar management
+    |       |-- MyServices/   # Service management page
+    |       |-- ProviderDetails/
+    |       `-- ProvidersList/
+    |-- Services/             # API service modules
+    |   `-- appointmentService.js
+    `-- styles/               # Global styles
+        |-- global.css        # Global styles
+        |-- reset.css         # CSS reset
+        `-- variables.css     # CSS variables and theming
 ```
-
 ## Application Routes
 
 ### Public Routes
@@ -128,7 +124,7 @@ rot-right-on-time-frontend/
 
 | Route              | Component       | Description                            | Access        |
 | ------------------ | --------------- | -------------------------------------- | ------------- |
-| `/user/profile`    | UserProfilePage | Client profile management              | Authenticated |
+| `/profile`         | ProfilePage      | User profile management                | Authenticated |
 | `/booking`         | Booking         | Appointment booking flow               | Authenticated |
 | `/calendar`        | Calendar        | Client appointment calendar            | Authenticated |
 | `/my-appointments` | Appointments    | View and manage scheduled appointments | Authenticated |
@@ -137,10 +133,10 @@ rot-right-on-time-frontend/
 
 | Route                | Component           | Description                    | Access                   |
 | -------------------- | ------------------- | ------------------------------ | ------------------------ |
-| `/provider/profile`  | ProviderProfilePage | Provider profile and settings  | Authenticated (Provider) |
+| `/profile`           | ProfilePage       | Provider profile and settings  | Authenticated (Provider) |
 | `/provider/calendar` | ProviderCalendar    | Provider schedule management   | Authenticated (Provider) |
 | `/provider/services` | MyServices          | Create and manage services     | Authenticated (Provider) |
-| `/provider/:id`      | ProviderDetails     | Provider profile (public view) | Public                   |
+| `/providers/:id`     | ProviderDetails     | Provider profile (public view) | Public                   |
 
 ### Error Handling
 
@@ -325,3 +321,4 @@ It is **not intended for** commercial use, production deployment, or real-world 
 <p style="font-size: 20px;">
   🌍 <a href="https://rot-right-on-time.vercel.app/">Live Demo</a>
 </p>
+
