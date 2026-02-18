@@ -14,6 +14,7 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState(null);
   const { authenticateUser } = useContext(AuthContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOAuthConfirmOpen, setIsOAuthConfirmOpen] = useState(false);
 
   const nav = useNavigate();
 
@@ -78,10 +79,17 @@ function Login() {
     }
   };
 
+  const [oauthRole, setOauthRole] = useState("user");
+
   const handleGoogleLogin = () => {
+    setIsOAuthConfirmOpen(true);
+  };
+
+  const confirmGoogleLogin = () => {
     setErrorMessage(null);
     setIsSubmitting(true);
-    window.location.assign(`${API_URL}/api/auth/google`);
+    setIsOAuthConfirmOpen(false);
+    window.location.assign(`${API_URL}/api/auth/google?role=${oauthRole}`);
   };
 
   return (
@@ -127,7 +135,22 @@ function Login() {
             {isSubmitting && <Spinner size={20} text="" />}
           </div>
 
-          <div className="oauth-separator">or</div>
+          <section className="role-selector">
+            <button
+              type="button"
+              className={oauthRole === "user" ? "active" : ""}
+              onClick={() => setOauthRole("user")}
+            >
+              Client
+            </button>
+            <button
+              type="button"
+              className={oauthRole === "provider" ? "active" : ""}
+              onClick={() => setOauthRole("provider")}
+            >
+              Provider
+            </button>
+          </section>
 
           <button
             type="button"
@@ -138,6 +161,27 @@ function Login() {
             <FcGoogle className="oauth-google-icon" aria-hidden="true" />
             Continue with Google
           </button>
+
+          {isOAuthConfirmOpen && (
+            <section className="oauth-confirm">
+              <p>
+                Continue with Google as{" "}
+                <strong>{oauthRole === "provider" ? "Provider" : "Client"}</strong>
+                ?
+              </p>
+              <div className="oauth-confirm-actions">
+                <button
+                  type="button"
+                  onClick={() => setIsOAuthConfirmOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button type="button" onClick={confirmGoogleLogin}>
+                  Continue
+                </button>
+              </div>
+            </section>
+          )}
 
           <p className="login-footer">
             New here? <Link to="/register">Sign up</Link>
