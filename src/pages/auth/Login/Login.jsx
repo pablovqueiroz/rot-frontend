@@ -1,6 +1,7 @@
 import "./Login.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
 import { API_URL } from "../../../config/config";
@@ -15,6 +16,42 @@ function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const nav = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const oauthToken = params.get("authToken") || params.get("token");
+    const oauthError = params.get("error") || params.get("oauthError");
+    const clearOAuthParamsFromUrl = () => {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    };
+
+    if (oauthError) {
+      setErrorMessage("OAuth login failed. Please try again.");
+      clearOAuthParamsFromUrl();
+      return;
+    }
+
+    if (!oauthToken) return;
+
+    const finishOAuthLogin = async () => {
+      setIsSubmitting(true);
+      try {
+        localStorage.setItem("authToken", oauthToken);
+        await authenticateUser();
+        clearOAuthParamsFromUrl();
+        nav("/profile");
+      } catch (err) {
+        setErrorMessage(
+          err.response?.data?.errorMessage ||
+            "OAuth login failed. Please try again.",
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    finishOAuthLogin();
+  }, [authenticateUser, nav]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,6 +76,12 @@ function Login() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    setErrorMessage(null);
+    setIsSubmitting(true);
+    window.location.assign(`${API_URL}/api/auth/google`);
   };
 
   return (
@@ -83,6 +126,18 @@ function Login() {
 
             {isSubmitting && <Spinner size={20} text="" />}
           </div>
+
+          <div className="oauth-separator">or</div>
+
+          <button
+            type="button"
+            className="oauth-button"
+            onClick={handleGoogleLogin}
+            disabled={isSubmitting}
+          >
+            <FcGoogle className="oauth-google-icon" aria-hidden="true" />
+            Continue with Google
+          </button>
 
           <p className="login-footer">
             New here? <Link to="/register">Sign up</Link>
